@@ -1,0 +1,18 @@
+
+The save data is stored twice for redundancy.
+Each occurrence is 0x1000 bytes, so the entire save file is 0x2000 bytes.
+
+000,01F: "AGBZELDA:THE MINISH CAP:ZELDA 5"
+030,002: Save file 1 checksum.
+  To get this value, calculate the checksums of the string at 034,004 and the data at 080,500. Add those two checksums together and mask with & 0xFFFF.
+032,002: Save file 1 redundant checksum.
+  This is just negative (030,002). Adding these two values together should produce 0x10000.
+034,004: "3ZCM" for initialized save files, "INIT" for uninitialized. "DelF" for corrupted/deleted files?
+040,004: Could be a checksum for save file 2?
+044,004: "3ZCM" for initialized save files, "INIT" for uninitialized.
+050,004: Could be a checksum for save file 2?
+054,004: "3ZCM" for initialized save files, "INIT" for uninitialized.
+080,500: Save file 1 data.
+580,500: Save file 2 data.
+A80,500: Save file 3 data.
+  why are these 0x500 bytes instead of 0x4B4 bytes?

@@ -1,0 +1,672 @@
+
+cheats: https://www.zeldadungeon.net/Zelda10Codes.php
+
+02000005,1 - Player's desired text speed.
+  0 - Slow
+  1 - Normal
+  2 - Fast
+
+02000050,1 - Related to message dialogue?
+  & 7F:
+    00 - No message is currently on screen.
+    04 - There is a message box on screen, and it's not at the end yet.
+    07 - There is a message box on screen, and it's at the end, it will close when the player presses a button.
+02000052,1 - Text speed of this text box.
+  00 - Slow
+  01 - Normal
+  02 - Fast
+  63 - Use the player's desired text speed at 02000005,1.
+02000054,1 - Width of the inside of the textbox.
+  This is in terms of 8x8 blocks. And it doesn't count the borders, which are add 2 more blocks to the width.
+  This gets rounded up to the next even number of blocks.
+02000055,1 - Height of the inside of the textbox.
+  This is in terms of 8x8 blocks. And it doesn't count the borders, which are add 2 more blocks to the height.
+  This gets rounded up to the next even number of blocks.
+02000056,1 - X offset from the left of the screen to place the text box at.
+  This is terms of 8x8 blocks.
+02000057,1 - Y offset from the top of the screen to place the text box at.
+  This is terms of 8x8 blocks.
+  1 is usually used for text boxes at the top of the screen, and 0xC is usually used for ones at the bottom.
+
+
+02000090 - List of items currently on the player's inventory screen.
+  Each entry is a byte, which is an item ID.
+  00 means nothing is in that slot right now.
+  This can either be for the items screen or the quest status screen, it changes depending on what one you're on.
+
+02002A40,4B4 - Current save file data.
+02019EEC,4B4 - Save file 1 data.
+0201A3A0,4B4 - Save file 2 data.
+0201A854,4B4 - Save file 3 data.
+
+=== Current save data starts here (02002A40)
+
+02002A40,2 - If this is equal to 0x100, the save file has been started. Otherwise, it's a brand new save file and the intro should be played.
+02002A47,1 - Used as the frame index for the big rotating barrel in Deepwood?
+02002A48,1 - Affects the state of Hyrule Town?
+02002A80,4 - Bitfield of something? Game states?
+  00000001 - Mount Crenal visible on world map
+  00000002 - Mount Crenal's Base visible on world map
+  00000004 - Castor Wilds visible on world map
+  00000008 - Wind Ruins visible on world map
+  00000010 - Royal Valley visible on world map
+  00000020 - Trilby Highlands visible on world map
+  00000040 - Western Wood visible on world map
+  00000080 - Hyrule Castle Garden visible on world map
+  00000100 - North Hyrule Field visible on world map
+  00000200 - Hyrule Town visible on world map
+  00000400 - South Hyrule Field visible on world map
+  00000800 - Veil Falls visible on world map
+  00001000 - Lon Lon Ranch visible on world map
+  00002000 - Eastern Hills visible on world map
+  00004000 - Cloud Tops visible on world map
+  00008000 - Lake Hylia visible on world map
+  00010000 - Minish Woods visible on world map
+  01000000 - Unlocked Mount Crenal Wind Crest
+  02000000 - Unlocked Veil Falls Wind Crest
+  04000000 - Unlocked Cloud Tops Wind Crest
+  08000000 - Unlocked Hyrule Town Wind Crest
+  10000000 - Unlocked Lake Hylia Wind Crest
+    Note that this one is hardcoded to be unlocked by the Ocarina item you pick up at the top of the Fortress of Winds.
+  20000000 - Unlocked Castor Wilds Wind Crest
+  40000000 - Unlocked South Hyrule Field Wind Crest
+  80000000 - Unlocked Minish Woods Wind Crest
+02002AC8,1 - Current area index
+02002AC9,1 - Current room index
+02002AEB,1 - (script command 81 does something with this)
+
+02002AF4,1 - Item ID equipped on button A.
+02002AF5,1 - Item ID equipped on button B.
+02002AF6,1 - Item ID in bottle 1.
+02002AF7,1 - Item ID in bottle 2.
+02002AF8,1 - Item ID in bottle 3.
+02002AF9,1 - Item ID in bottle 4.
+  When a bottle is empty, it has 0x20 here.
+
+02002AE8,1 - Current rupee pouch.
+02002AE9,1 - Current number of heart pieces.
+02002B00,2 - Current number of rupees.
+02002B02,2 - Owned number of mysterious shells.
+
+02002B0E-02002B31 - Bitfield of figurines you own.
+  The figurine ID is the index in this bitfield.
+02002B32-02002B53 - Bitfield of items you have (owned item info).
+  Note that each item takes up 2 bits.
+  An item being owned normally in denoted by the low bit being set and the high bit being clear.
+  So setting all 4 items in a byte as owned would be done by setting the byte to 0x55 (binary 01010101).
+  In some cases the low bit is clear and the high bit is set, this seems to be for having previously owned an item and handed it over to someone.
+  If both the low and high bit are set, it seems to act the same as just the high bit being set.
+  Any bit in the first byte (02002B32): Gives you the ability to pause the game.
+    Yes, this means the first 3 swords would give you the ability to pause if you somehow didn't already have it.
+  Bit 0x40 in byte 02002B43: Gives you the ability to access the map screen on the pause screen.
+
+02002B54
+02002B58
+02002B6B
+
+02002C81-02002C8D - Bitfield of kinstones you've fused.
+  Valid indexes are 01-64 (subtract 1 from the index).
+02002C9C-02002E9B - Event flag bitfield.
+  Grouped into bytes.
+  Note that for local flags 02033A94,2 has the bit index offset for the currently loaded area.
+  Index: Address Bit Description
+  002: 02002C9C 04 Killed Big Green Chuchu
+  003: 02002C9C 08 Killed Gleerok
+  005: 02002C9C 20 Killed Big Octorok
+  006: 02002C9C 40 Killed Gyorg Pair
+  012: 02002C9E 04 
+  013: 02002C9E 08 Set by Zelda when you first meet her in Smith's house
+  014: 02002C9E 10 Saw the event where Ezlo jumps on your head and you now have him as a hat
+  02B-030: Seem related to Din/Nayru/Farore
+  13B: 02002CC3 08 Saw a minish portal with Ezlo for the first time?
+
+=== Current save data ends here (02002EF3)
+
+
+02034364 - Bitfield of room flags.
+  These are cleared when the player changes rooms.
+
+0200AF13,1 - 7F?
+0200AF14,1 - 7F?
+
+02017654,4 - Current room's property list pointer.
+020342EC,4 - Pointer to the room in RAM the player is about to enter.
+
+020342F0,4 - the value at 020342F4,4 gets copied here?
+  set by tile entity type Ds
+020342F4,4 - Current BGM ID?
+
+02034496,1 - ? maybe world map region the player is currently located in
+  gets copied to 02000083,1
+02000083,1 - currently selected world map region?
+  index in list 08128DE8
+020000AE,2 - Message ID of the region name string for the currently selected region on the world map screen.
+
+02032EC2 - Which menu the player is on?
+  0 No menu, ingame
+  1 Pause menu
+  4 Kinstone fusion screen
+  5 Green Chuchu invading Deepwood Shrine cutscene
+  6 Shrinking cutscene inside a Minish portal
+  7 Figurine menus
+  8 Kinstone fusion reward display screen
+    during a kinstone fusion reward display, it doesn't load the same entity lists as when you go to that room yourself.
+    it loads:
+      prop 1 ("Entities 2")
+      prop 4 (func ptr for kinstone fusion specific entities)
+  9 Warp select menu
+
+02032EC3,1 - Figurine ID the player just got.
+0200009C,1 - Figurine ID the player just got.
+
+0200008C,4 - Pointer to ?
+  this seems to be 0 during gameplay, but is a pointer when on a menu screen
+
+020344A1,1 - Another UI screen related index?
+020344A4,1 - Current UI screen?
+  This is an index in list 08128A38.
+  00 - 
+  01 - Inventory screen
+  02 - Quest status screen
+  03 - 
+  04 - World map screen
+  05 - Dungeon map screen
+  06 - Area map screen
+  07 - Kinstone pieces screen
+  08 - Sword techniques screen
+  09 - Sleep mode screen
+  0A - Save screen
+  0B - Save screen, again?
+  0C - 
+  0D - 
+  0E - Ingame
+  0F - ?
+
+
+
+
+02033A90,1 - ?
+02033A91,1 - ?
+02033A93,1 - Current dungeon index.
+  This is an index in list 080C9C50.
+  0 - Deepwood Shrine?
+  1 - Deepwood Shrine?
+  2 - Cave of Flames
+  3 - Fortress of Winds
+  4 - Temple of Droplets
+  5 - Palace of Winds
+  6 - Dark Hyrule Castle
+02033A94,2 - Current area's event flag offset.
+02033A96,1 - ?
+02033A98,1 - Current index in list 02031EC0?
+
+02031EC0 - List of data for entities to be loaded delayed...?
+  Entry length 0x10.
+  The format of each entry in this list is the same as in each room's entity list in ROM.
+  
+
+02036570 - One place that a cutscene entity can be placed.
+02022750 - Another place a cutscene entity can be placed.
+02036594 - Another place a cutscene entity can be placed.
+  Format:
+  00,4: Has a pointer to the current script command in ROM being executed. (e.g. 08009C2E)
+  04,4: Extra argument.
+  08,4: Bitfield of ???
+  14,4: Result of the most recently checked condition.
+
+02022740 - Kinstone fusion entity?
+02022743,1 - Kinstone ID the NPC is presenting to fuse?
+  Index in list 080C9CBC
+
+02033280,4 - Bitfield?
+02033284,2 - Type of the current script command.
+02033286,1 - Length of the current script command in halfwords??
+  actually it's probably something else...
+02033287,1 - Bitfield.
+  & 01 -
+    Cleared whenever any new command starts?
+    Set whenever a condition is checked?
+  & 02 -
+    Command type 1 exists to set this bit. (Might mark the start of initialization commands?)
+    Command type 2 exists to clear this bit. (Might mark the end of initialization commands?)
+    It seems that as long as either bits 01 or 02 are set, line 0807DFE6 will continue looping reading commands?
+
+03003DC0,1 - ?
+  6 - in some kind of a cutscene? like screen scrolling when going through a transition, or getting an item?
+  7 - starting to go through an exit?
+
+02032EE0,1 - Current area index...?
+02032EE1,1 - Current room index...?
+  these are used when drawing dungeon maps?
+
+02033ACC - List rooms in the current area that are partially loaded?
+  Entry length 0x20.
+  03000BF5 is an index in this list
+  00,2: Room's width in pixels.
+  02,2: Room's height in pixels.
+  04,2: Room's X offset in pixels on the map.
+  06,2: Room's Y offset in pixels on the map.
+  08,4: GFX and palettes assets lists for the room. (From list 0810246C.)
+  0C,4: Layer assets lists for the room. (From list 08107988.)
+  10,4: Tilesets list for the area. (From list 0810309C.)
+  14,4: ??? for the area. (From list 080B755C.)
+  18,4: Exit list pointer for the room. (From list 0813A7F0.)
+  1C,4: Property list for the room. (From list 080D50FC.)
+
+020332B0,1 - Current visual zone ID #1 (In Hyrule Town)
+020332B1,1 - Current visual zone ID #2 (In Hyrule Town)
+020332B2,1 - Current visual zone ID #3 (In Hyrule Town)
+
+02034350 - ?
+  02034351,1 - If this is 1, a destructible tile entity (type A) has already created a 9-2A entity.
+    Once this is set, no more 9-2A entities need to be created in this room. One of these handles all destructible tiles.
+  02034352,1 - changed from 01 to 00 when link gets his hat?
+  02034356,1 - Item ID to give?
+  02034357,1 - Item param to give?
+  02034359,1 - 
+  0203435C,2 - ? set by type 9 tile entities
+  0203435E,2 - ? Number of tile entities currently loaded in this room? (number of entries in list 0200B240)
+  02034360,1 - index in list 081080A4
+
+02021F30 - BG2 tile mapping. (Or can be BG1 tile mapping sometimes?)
+0202F9D4 - BG2 tile mapping.
+
+0200B650,4 - Pointer to BG1's BG control.
+02025EB0,4 - Pointer to BG2's BG control.
+
+0200B654 - BG1 16x16 tile mapping.
+02025EB4 - BG2 16x16 tile mapping.
+  A list of halfwords, which is the 16x16 tile mapping for this layer.
+  The index in this list of halfwords is a bitfield with this format:
+    0x003F - X pos in 16x16 tiles.
+    0x0FC0 - Y pos in 16x16 tiles.
+
+0202CEB4 - BG2 8x8 tile mapping.
+02012654 - BG1 8x8 tile mapping.
+
+02019EE0 - BG2 8x8 tile mapping for 256 color layers?
+
+0200B240 - List of tile entities currently loaded in this room.
+  Entry length 4.
+  00,2: Bitfield.
+    & 003F - X pos of the tile entity in terms of 16x16 tiles.
+    & 0FC0 - Y pos of the tile entity in terms of 16x16 tiles.
+    & ??
+
+02010654-02011653 - List of what the tile type is for each tile on the current BG1 tileset.
+0202AEB4-0202BEB3 - List of what the tile type is for each tile on the current BG2 tileset.
+  Each entry is a halfword.
+  A 16x16 tile index is an index in this list.
+  0x1000 bytes long in total (0x800 entries).
+  00,2: Bitfield.
+    & 3FFF - The tile type.
+    & 4000 - Changes the type of the above value??
+      If set, the above index is an index in list 080B7910.
+      If clear, the above index is an index in list 080B37A0.
+        Or, the above index can be an index in list 080B3E80?
+
+02011654-02012653 - List of where to find each tile type on the current BG1 tileset.
+0202BEB4-0202CEB3 - List of where to find each tile type on the current BG2 tileset.
+  Each entry is a halfword.
+  0x1000 bytes long in total (0x800 entries).
+  The index in this list is a tile type.
+  Each entry is a 16x16 tile index within the tileset.
+
+02027EB4-02028EB3 - Collision data for a layer.
+  Each entry is a byte, the collision for that 16x16 tile.
+
+
+
+
+020354B0,4 - Has a pointer to ? 02024050
+02024050,4 - Bitfield of enemies in the current room...?
+  maybe enemy death flags?
+
+02024494-020246A3 - List of entity GFXs that are currently loaded...?
+  (This list is sometimes treated like it starts at 02024490...?)
+  Entry length 0xC.
+  0x2C entries in total.
+  note that an index in this list is passed as argument r0 to func 080AE0C8
+  an index in this list is passed as argument r0 to func 080ADE74 too
+  and again at 080042F6
+  00,1: Bitfield.
+    & 0F - ?
+  01,1: Length of the GFX data in terms of 16 8x8 tiles (0x200 bytes)? Also the number of consecutive slots in this list it uses up?
+  03,1: 
+  04,2: Subtype of the entity...?
+  06,2: Length of the GFX data in in terms of 16 8x8 tiles (so multiply this number by 0x200 to get the length in bytes).
+    If this is FFFF, it has some special meaning.
+  08,4: Pointer to GFX data.
+
+03000004,2 - Screen's current X offset in the current map.
+03000006,2 - Screen's current Y offset in the current map.
+
+030010EC-0300110B - List of minecarts. Copied from 080FCAF8.
+
+030010D1,1 - If this is 0, show an Ezlo hint after loading a save file
+
+03000BF0,2 - ?
+  0 when loading a save file, 1 when going through a door?
+03000BF4,1 - Current area index.
+03000BF5,1 - Current room index.
+  this is an index in list 02033ACC
+03000BF6,2 - The current room's X offset in pixels in the current map.
+03000BF8,2 - The current room's Y offset in pixels in the current map.
+03000BFA,2 - Screen scrolling X pos.
+  (03000BF6's value gets subtracted from this one.)
+03000BFC,2 - Screen scrolling Y pos.
+  (03000BF8's value gets subtracted from this one.)
+03000C04,1 - ?
+03000C06,2 - ?
+03000C0E,2 - Current room width in pixels.
+03000C10,2 - Current room height in pixels.
+03000C20,2 - Pointer to the entity for the camera to follow and try to keep at the center of the screen.
+  e.g. 03001160 for the player.
+  If this pointer is 0 the camera won't follow any entity.
+
+03000F50,2 - LCD control.
+03000F58,2 - BG0 control.
+03000F64,2 - BG1 control.
+03000F70,2 - BG2 control.
+03000F7C,2 - BG3 control.
+03000FB8,2 - Alpha blending coefficients. (Copied to 04000052,2.)
+
+080B77C4,2 - Where the BG2 control 1D46 is specified in ROM.
+0801DB5C - Where the BG3 control 1E03 is hardcoded in ROM.
+080A17B2 - Where the BG3 control 1E07 is hardcoded in ROM by entity 6-BA (used in room 71-00).
+
+03000C24 - List of assets that are currently being loaded asynchronously?
+  Entry length 0xC.
+  00,1: ? Could be a boolean
+  02,2: Size in bytes of the asset to load.
+  04,4: ROM pointer to load the asset from.
+  08,4: VRAM pointer to load the asset to.
+
+03000FF0,2 - Bitfield of buttons that are currently down.
+03000FF2,2 - Bitfield of buttons pressed this frame.
+03000FF4,2 - Bitfield of buttons ???
+  0001 - A
+  0002 - B
+  0004 - Select
+  0008 - Start
+  0010 - Right
+  0020 - Left
+  0040 - Up
+  0080 - Down
+  0100 - R
+  0200 - L
+
+03000020-0300041F - List of OAM sprites. Gets DMAd to 07000000.
+
+030000B8 - zelda oam sprite.
+030066C4 - code that writes to the 03000020 list of OAM sprites.
+030066A8 - here r2 has x pos.
+0300697C - might be an actual sprite object in memory?
+  00,1: width or x pos or something?
+  02,1: width or x pos or something?
+
+03000F70,2 - BG2 control for the current room.
+
+03001003,1 - 
+03001004,1 - 
+
+0300400B,1 - Affects the player's control of Link?
+  0 - Player has normal control
+  1 - Player should be given control back next frame?
+  3 - In a cutscene?
+
+03003FB0,4 - Bitfield of Link states?
+  & 00000008 - Hatless.
+  & 00000020 - Standing on a Minish portal.
+  & 00000080 - Minish-sized.
+  & 00040000 - Rolling.
+
+030065C0 - code where it loads x pos into r6. this is actually a function up, and r6 is passed as an argument, very unusually.
+03001010 - a sprite object in memory it's reading from?
+  00,2: signed x pos
+  02,2: signed y pos
+  04,4: ???
+  08,2: ??? unsigned
+this is only for the UI, like the buttons in the top right
+
+03000C34,4 - Pointer to ??? something related to the room's GFX?
+
+02017660-0201769F - List of tile entities for the current room.
+  Entry length 8.
+  The same format as a tile entity in ROM.
+  8 entries in total, so you can't have more than 8 tile entities per room...? but this might only be specific types of tile entities??
+
+020176A0-0201789F - Background palettes loaded in RAM.
+020178A0-02017A9F - Object palettes loaded in RAM.
+
+
+
+03000FF0,2 - Bitfield.
+  & 04 - If this is set, it makes Ezlo give a hint when loading a save file?
+
+
+
+
+02034398,20 - Current grass drop table.
+
+020343BC,20 - Current room's entity metadata?
+
+020354B4,1 - Number of entity slots currently used (in list 02033290).
+
+02033290-02033A8F - List of entity slots.
+  Entry length 0x40.
+  0x20 entity slots in total.
+  Seems to be used only for type 9 entities.
+
+All possible entity slots in list 02033290:
+02033290
+020332D0
+02033310
+02033350
+02033390
+020333D0
+02033410
+02033450
+02033490
+020334D0
+02033510
+02033550
+02033590
+020335D0
+02033610
+02033650
+02033690
+020336D0
+02033710
+02033750
+02033790
+020337D0
+02033810
+02033850
+02033890
+020338D0
+02033910
+02033950
+02033990
+020339D0
+02033A10
+02033A50
+
+02000CC0-02000CFF - List of ?
+  Entry length 8.
+  8 entries in total.
+  00,4: Pointer to ?? (pointer comes from list 080B7278)
+  06,2: 
+
+
+03005F94 - entity update loop code?
+
+03003DBC,1 - Number of entity slots currently used (in list 030015A0).
+
+03001160-03003BDF - List of entity slots.
+  Entry length 0x88.
+  0x50 entity slots in total.
+  Used for all entity types except type 9.
+  The first 8 aren't always used? So sometimes the list is treated as if it was:
+030015A0-03003BDF - List of entity slots.
+  Entry length 0x88.
+  0x48 entity slots in total.
+
+All possible entity slots in list 03001160:
+03001160 - Link entity
+030011E8 - Special entity? Can be used for Link's sword as it's attacking
+03001270 - Special entity?
+030012F8 - Special entity?
+03001380 - Special entity?
+03001408 - Special entity?
+03001490 - Special entity?
+03001518 - Special entity?
+030015A0 - Normal entity
+03001628
+030016B0
+03001738
+030017C0
+03001848
+030018D0
+03001958
+030019E0
+03001A68
+03001AF0
+03001B78
+03001C00
+03001C88
+03001D10
+03001D98
+03001E20
+03001EA8
+03001F30
+03001FB8
+03002040
+030020C8
+03002150
+030021D8
+03002260
+030022E8
+03002370
+030023F8
+03002480
+03002508
+03002590
+03002618
+030026A0
+03002728
+030027B0
+03002838
+030028C0
+03002948
+030029D0
+03002A58
+03002AE0
+03002B68
+03002BF0
+03002C78
+03002D00
+03002D88
+03002E10
+03002E98
+03002F20
+03002FA8
+03003030
+030030B8
+03003140
+030031C8
+03003250
+030032D8
+03003360
+030033E8
+03003470
+030034F8
+03003580
+03003608
+03003690
+03003718
+030037A0
+03003828
+030038B0
+03003938
+030039C0
+03003A48
+03003AD0
+03003B58
+
+03003D70 - List of something related to entities?
+  Entry length 8.
+  Has pointers to various entities?
+  00,4: Pointer to an entity?
+  04,4: 
+
+
+020000C0 - List of extra sprites for an entity?
+  Can be used to have a head and body rendered separately for example
+  Entry length 0x40.
+  Each entry is composed of 4 sub-entries.
+  Format of each sub-entry:
+    00,1: Bitfield?
+    01,1: Frame index.
+      FF for none?
+    02,2: Sprite index.
+    05,1: ? palette index in object palettes VRAM?
+    06,1: X offset.
+      For guard's head, copied from 089FC4BC
+    07,1: Y offset.
+      For guard's head, copied from 089FC4BD
+    08,1: ? tile index offset in GFX VRAM relative to the first GFX tile index for this entity?
+    0A,2: first tile index in GFX VRAM?
+
+02001A00 - List of object palettes currently loaded.
+  Each entry is a word.
+  00,4: Bitfield.
+    & 0000000F - Type?
+      1 - Deleted and free to be used again?
+      4 - Maybe a common palette always loaded? indexes 0-5, and F
+    & 000000F0 - How many consecutive entries in this list long this group of palettes is.
+    & 0000FF00 - Number of entities currently using this palette.
+
+
+02036570 - List of ??? slots.
+  Entry length 0x24.
+  00,4: Pointer to ?
+    If this is 0, it means this slot is empty.
+  Function 0807DAA0 is responsible for returning an empty slot in this list when one is needed.
+
+
+02002AC8,20 - some specific part of current save file data.
+030010AC,20 - the data from 02002AC8,20 gets copied here.
+030010AC,1 - Saved area index
+030010AD,1 - Saved room index
+030010B0,2 - Player's saved X position
+030010B2,2 - Player's saved Y position
+030010C0,2 - Player's overworld X pos in pixels.
+  Copied from 0300118E,2, but only when only the overworld.
+030010C2,2 - Player's overworld Y pos in pixels.
+  Copied from 03001192,2, but only when only the overworld.
+
+0300118C,4 - Player's X pos in subpixels.
+0300118E,2 - Player's X pos in pixels.
+03001190,4 - Player's Y pos in subpixels.
+03001192,2 - Player's Y pos in pixels.
+
+030016A0 - a room entity? 0x10 bytes
+
+0300695C-03006A1B - List of OBJ pixel sizes and pixel offsets.
+  Entry length 4.
+  The index in this list is:
+    obj_size*1 + obj_shape*4 + h_flip*0xC + v_flip*0x18
+  00,1: X offset for this OBJ (need to negate this number).
+  01,1: Y offset for this OBJ (need to negate this number).
+  02,1: Width of this OBJ in pixels.
+  03,1: Height of this OBJ in pixels.
+
+03001002,1 - Game state.
+  0 - Title screen
+  1 - Save select screen
+  2 - Ingame
+03001003,1 - Game substate.
+03001004,1 - Game subsubstate.
+
+02019EE6,1 - Selected save file index

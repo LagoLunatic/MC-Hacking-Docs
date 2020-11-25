@@ -1,0 +1,160 @@
+
+Room properties list format:
+  Entry length 0x20+
+  00,4: Entity list pointer.
+  04,4: Entity list pointer 2?
+  08,4: Enemy entity list.
+    Maximum of 0x20 entries in this list.
+    Entities of type 3 (enemies) in this list are loaded specially, in order to make enemies stay temporarily dead.
+    The enemy's index in this list is a bit index for whether the enemy is temporarily dead or not.
+    If entities not of type 3 are in this list for some reason they get loaded in normally.
+    Note that this list does not get loaded until event bit 0x15 is set.
+  0C,4: Tile entity list pointer.
+  10,4: 
+  14,4: Function pointer?
+  18,4: Function pointer?
+  1C,4: Function pointer. Might be cutscene related. Or room state related.
+  20+: More property pointers may or may not be in this list. It depends on the room.
+    If there are more, the meaning of each property isn't determined by its index like the first 8 properties.
+
+Entity format:
+  Entry length 0x10.
+  00,1: Bitfield.
+    0xFF marks the end of this list.
+    & 0x0F - Type.
+      if this is 9, call func 0805E8D5
+      otherwise call func 0805E679
+    & 0xF0 - unknown1 (might affect layer its on?)
+      & 0x1 - ??
+        sets entity+38,1 to 1
+      & 0x2 - ??
+        sets entity+38,1 to 2
+      if neither 0x1 nor 0x2 are set:
+        (code at 0804AE88)
+  01,1: Bitfield.
+    & 0x0F - unknown2
+      checked at 0804AECA
+      this value affects how func 0805EA2C is called:
+        F means use arg r1=(read from list 081091E4, index is this entity's type)
+        0-E means use arg r1=(this value)
+    & 0xF0 - unknown3
+      (Other than 1 here, other values here to be ignored if the entity's type is 9.)
+      0 This entity has an X and Y position.
+      1 means do NOT store unknown4 and unknown5 to the RAM entity
+      2 This entity has an X and Y position, and also bit &20 of bitfield entity+6D should be set?
+      4 This entity has an X and Y position, and its params are a cutscene pointer to start.
+      5 has some special meaning?
+      Other values are invalid?
+  02,1: Entity subtype.
+  03,1: Form.
+  04,1: unknown4
+  05,1: unknown5
+  06,1: unknown6
+    if not 0, gets stored to entity+6E,1
+  07,1: unknown7
+    if not 0, gets stored to entity+6F,1
+  08,2: X pos.
+  0A,2: Y pos.
+  0C,4: Params?
+    when type is 7: Pointer to the first cutscene script command
+
+Delayed load entity format:
+  00,1: Subtype.
+    0xFF marks the end of this list.
+  01,1: Form.
+  02,1: unknown4
+  03,1: Layer index.
+  04,2: X pos.
+  06,2: Y pos.
+  08,4: Pointer to the first cutscene script command, or 0 for none.
+  0C,2: unknown5
+  0E,2: Bitfield affecting conditions for this entity being created?
+    
+
+Tile entity format:
+  Entry length 8.
+  00,1: Type.
+    00 is invalid, means the end of the list
+    01-0D minus 1 is the value used in a switch statement at 0804B1C0
+  01,1: Params A.
+  02,2: Params B.
+  04,2: Params C.
+  06,2: Params D.
+    for type 2 and 3: local flag index of the chest being opened
+    for type A: this is the layer index (in list 08000228) that this thing is on
+  01,1: If type 4, set the params&FFFF0000 of the created 9-24 entity to this.
+  02,1: If type 4, the unknown5 of the 9-24 entity to create.
+  02,2: If type A, the local flag ID for this thing being destroyed.
+  03,1: 
+    if type 2 or 3: number of mysterious shells to give. or what type of kinstone piece to give.
+  06,1:
+    & 0x01 - if this is set, do ??? at 0804B2BE-0804B2FA
+    check the local flag index at 01,1 and if it's not set, create an entity
+    the entity created will be type 6, subtype 0x52, form equal to the 01,1 flag index
+
+Room graphics metadata format:
+  Entry length 0xA.
+  00,2: This room's X offset in pixels in the current map.
+    If this is 0xFFFF, it marks the end of this list of rooms for the area.
+  02,2: This room's Y offset in pixels in the current map.
+    Note that these X and Y offsets seem to affect the X and Y positions the player is placed at when going through an exit (if the exit doesn't override them).
+  04,2: Width in pixels.
+  06,2: Height in pixels.
+  08,2: Available tileset index - which tileset to use out of the available tilesets for this area.
+    if this is 0xFFFF, the room might be invalid somehow? it won't be initialized, and will crash?
+
+Room exit format:
+  Entry length 0x14.
+  00,2: Exit type.
+    FFFF marks the end of the list.
+    Valid types:
+    0 - Screen edge transition. Fade to white.
+    1 - Spot based transition?
+    2 - Screen edge transition. Pixelate to black.
+    3 - ?
+  02,2: X pos.
+  04,2: Y pos.
+  06,2: Destination X pos.
+    If this is 0x0400 or higher, the player's X pos from before entering the exit will be kept.
+  08,2: Destination Y pos.
+    If this is 0x0400 or higher, the player's Y pos from before entering the exit will be kept.
+  0A,1: What screen edges this exit covers.
+    01 - Up, left half
+    02 - Up, right half
+    03 - Up, both halves
+    04 - Right, upper half
+    08 - Right, bottom half
+    0C - Right, both halves
+    10 - Down, left half
+    20 - Down, right half
+    30 - Down, both halves
+    40 - Left, upper half
+    80 - Left, bottom half
+    C0 - Left, both halves
+  0B,1: Destination area index.
+  0C,1: Destination room index.
+
+Minish exit region format:
+  Entry length 8.
+  00,2: Center X pos
+    FFFF here marks the end of the list.
+  02,2: Center Y pos
+  04,1: Half width
+  05,1: Half height
+  06,1: Index in this room's property list of a pointer to the exit
+  07,1: Bitfield.
+    & 03 - ?
+
+Room in RAM format:
+  e.g. 02033CCC, 02033B8C
+  Entry length 0x20.
+  00,2: Room width in pixels.
+  02,2: Room height in pixels.
+  04,2: ? (00,2 from Room within an area format)
+  06,2: ? (02,2 from Room within an area format)
+  08,4: Available tileset pointer.
+    Pointer to the list of metadata for the room's GFX/palettes.
+  0C,4: Pointer to ???
+  10,4: Pointer to the compressed metadata for the room's BG tile mapping??? probably wrong
+  14,4: Pointer to ???
+  1C,4: Pointer to a destination room? Or pointer to a room's entity list pointer?

@@ -1,0 +1,118 @@
+63 00 00 00 0000 0000       # 00 [Enables Pause screen]
+00 00 00 00 0501 0501       # 01 Smith's Sword
+00 00 00 00 0502 0502       # 02 White Sword
+00 00 00 00 0503 0503       # 03 White Sword (Two Elements)
+00 00 00 00 0504 0504       # 04 White Sword (Three Elements)
+00 00 00 00 0505 0505       # 05 ? looks like the lit Flame Lantern, but can be used as a sword?
+00 00 00 00 0506 0506       # 06 Four Sword
+07 07 63 00 051C 051C       # 07 Bombs
+07 07 63 00 0508 0508       # 08 Remote Bombs
+0B 0B 63 00 0509 0509       # 09 Bow
+0B 0B 63 00 050A 050A       # 0A Light Arrow
+03 12 00 00 050B 050B       # 0B Boomerang
+03 12 00 00 050C 050C       # 0C Magical Boomerang
+04 00 00 00 050D 050D       # 0D Small Shield
+04 00 00 00 050E 050E       # 0E Mirror Shield
+06 00 00 00 050F 050F       # 0F Flame Lantern
+06 00 00 00 0510 0510       # 10 Flame Lantern (Fire) (Owning this makes the pause screen crash the game)
+01 00 00 00 0511 0511       # 11 Gust Jar
+02 00 00 00 0512 0512       # 12 Cane of Pacci
+05 00 00 00 0513 0513       # 13 Mole Mitts
+09 00 00 00 0514 0514       # 14 Roc's Cape
+08 00 00 00 0515 0515       # 15 Pegasus boots
+63 00 00 00 0516 0516       # 16 Fire Rod (Unused)
+0A 00 00 00 0517 0517       # 17 Ocarina of Wind
+63 00 00 00 0000 0000       # 18 
+63 00 00 00 0000 0000       # 19 
+63 00 00 00 0000 0000       # 1A 
+63 00 00 00 0000 0000       # 1B 
+0C 03 00 01 0520 0520       # 1C Empty Bottle (1?)
+0D 03 00 01 0520 0520       # 1D Empty Bottle (2?)
+0E 03 00 01 0520 0520       # 1E Empty Bottle (3?)
+0F 03 00 01 0520 0520       # 1F Empty Bottle (4?)
+00 00 00 03 0520 0520       # 20 Empty Bottle (5?)
+00 04 00 03 0521 0521       # 21 Butter
+00 04 00 03 0522 0522       # 22 Lon Lon Milk
+00 04 00 03 0523 0523       # 23 ?? (sprite looks like a bottled something? half full of milk?)
+00 04 00 03 0524 0524       # 24 Red Potion
+00 04 00 03 0525 0525       # 25 Blue Potion
+00 04 00 03 0526 0526       # 26 Water
+00 04 00 03 0527 0527       # 27 Mt. Crenal Mineral Water
+00 04 00 03 0528 0528       # 28 Bottled fairy
+00 04 00 03 0529 0529       # 29 Red Picolyte
+00 04 00 03 052A 052A       # 2A Orange Picolyte
+00 04 00 03 052B 052B       # 2B Yellow Picolyte
+00 04 00 03 052C 052C       # 2C Green Picolyte
+00 04 00 03 052D 052D       # 2D Blue Picolyte
+00 04 00 03 052E 052E       # 2E White Picolyte
+00 04 00 03 052F 052F       # 2F Nayru's Charm
+00 04 00 03 0530 0530       # 30 Farore's Charm
+00 04 00 03 0531 0531       # 31 Din's Charm
+00 00 00 00 0532 0532       # 32 
+00 00 00 00 0533 0533       # 33 
+01 00 00 00 0534 0534       # 34 Smith's Blade (Key Item)
+01 00 00 00 0535 0535       # 35 Broken Picori Sword
+01 00 00 00 0536 0536       # 36 Bottle of Dog Food
+01 00 00 01 0537 0537       # 37 Lon Lon Ranch Key
+01 00 00 00 0538 0538       # 38 Wake-Up Mushroom
+01 00 00 00 0539 0539       # 39 Library Book: A Hyrulean Bestiary
+01 00 00 00 053A 053A       # 3A Library Book: Legend of the Picori
+01 00 00 00 053B 053B       # 3B Library Book: A History of Masks
+01 00 00 00 053D 053D       # 3C Graveyard Key
+00 00 00 00 0595 0595       # 3D Tingle Trophy
+03 00 00 00 0596 0596       # 3E Carlov Medal
+03 0E 01 00 053E 0577       # 3F Mysterious Shells
+09 00 00 02 0540 0540       # 40 Earth Element
+0A 00 00 02 0541 0541       # 41 Fire Element
+0B 00 00 02 0542 0542       # 42 Water Element
+0C 00 00 02 0543 0543       # 43 Wind Element
+0D 00 00 00 0544 0544       # 44 Grip Ring
+0E 00 00 00 0545 0545       # 45 Power Bracelets
+0F 00 00 00 0546 0546       # 46 Flippers
+63 00 00 00 0547 0547       # 47 Map of Hyrule
+00 00 00 00 0548 0548       # 48 Spin Attack
+00 00 00 00 0549 0549       # 49 Roll Attack
+00 00 00 00 054A 054A       # 4A Dash Attack
+00 00 00 00 054B 054B       # 4B Rock Breaker
+00 00 00 00 054C 054C       # 4C Sword Beam
+00 00 00 00 054D 054D       # 4D Great Spin Attack
+00 00 00 00 054E 054E       # 4E Down Thrust
+00 00 00 00 054F 054F       # 4F Peril Beam
+00 06 01 02 0550 0550       # 50 Dungeon Map
+00 06 02 02 0551 0551       # 51 Compass
+00 06 04 02 0552 0552       # 52 Big Key
+00 05 00 03 0553 0553       # 53 Small Key
+00 02 00 01 0554 0554       # 54 Green Rupee
+00 02 01 01 0555 0555       # 55 Blue Rupee
+00 02 02 01 0556 0556       # 56 Red Rupee
+00 02 03 00 0557 0557       # 57 Big Green Rupee (50 Rupees)
+00 02 04 00 0558 0558       # 58 Big Blue Rupee (100 Rupees)
+00 02 05 00 0559 0559       # 59 Big Red Rupee (200 Rupees)
+00 00 00 00 055A 055A       # 5A 
+00 00 00 01 055B 055B       # 5B Jabber Nut
+00 0F 00 02 055C 055C       # 5C Kinstone Piece
+00 09 05 01 055D 055D       # 5D 5 Bombs
+00 0C 05 01 055E 055E       # 5E 5 Arrows
+00 01 08 01 055F 055F       # 5F Heart
+00 01 20 01 0560 0560       # 60 Fairy
+00 0E 1E 00 053F 053F       # 61 Mysterious Shells (how does this differ from 3F?)
+00 00 01 02 0562 0562       # 62 Heart Container
+00 00 01 03 0518 0518       # 63 Heart Piece
+00 10 00 02 0564 0564       # 64 Big Wallet
+00 08 63 03 0507 0563       # 65 Big Bomb Bag
+00 0A 63 03 0566 0566       # 66 Large Quiver
+00 0D 00 00 0567 0567       # 67 Kinstone Bag
+00 00 00 02 0568 0568       # 68 Brioche
+00 00 00 02 0569 0569       # 69 Croissant
+00 00 00 02 056A 056A       # 6A Slice of Pie
+00 00 00 02 056B 056B       # 6B Slice of Cake
+00 09 0A 02 056C 056C       # 6C 10 Bombs (Bought)
+00 09 1E 02 056D 056D       # 6D 30 Bombs (Bought)
+00 0C 0A 02 056E 056E       # 6E 10 Arrows (Bought)
+00 0C 1E 02 056F 056F       # 6F 30 Arrows (Bought)
+63 00 00 03 0570 0570       # 70 Joy Butterfly, Shoot Arrows Faster
+63 00 00 03 0571 0571       # 71 Joy Butterfly, Dig Faster
+63 00 00 03 0572 0572       # 72 Joy Butterfly, Swim Faster
+63 00 00 02 0573 0573       # 73 Spin Attack Charge Time Decreased
+63 00 00 02 0574 0574       # 74 Split Gauge Charge Time Decreased
+63 00 00 02 0575 0575       # 75 Great Spin Attack Duration Increased

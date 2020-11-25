@@ -1,0 +1,107 @@
+
+Format of entities in list 02033290:
+  00,4: Pointer to the previous entity in RAM?
+    If this is 0, this entity slot is currently empty.
+  04,4: Pointer to ? next entity in RAM?
+  08,1: Entity type.
+  09,1: Entity subtype.
+  0A,1: Entity form.
+  0B,1: unknown4
+  0C,1: State.
+  0E,1: unknown5
+  14,4: Pointer to parent entity?
+  20,4: Pointer to ????
+    This comes from the room's property list, at the index specified by 0A,1 (e.g. 8).
+  30,10: The entry for this entity in the entity list in ROM is copied here directly.
+
+Format of entities in list 03001160:
+  00,4: Pointer to the previous entity in RAM.
+    If this is 0, this entity slot is currently empty.
+    If this is -1, this entity is marked for deletion, but has not been deleted yet.
+  04,4: Pointer to something in list 03003D70
+  08,1: Entity type.
+  09,1: Entity subtype.
+  0A,1: Entity form.
+  0B,1: unknown4
+  0C,1: State.
+    0 - Initialization state, the entity is only on this state for one frame when it's created.
+  0E,1: unknown5
+  10,1: Bitfield.
+    & 80 - 
+  12,2: Sprite index.
+  14,1: Facing direction.
+    0 - Up
+    2 - Right
+    4 - Down
+    6 - Left
+    Note that the lowest bit seems unused?
+  15,1: index in list 08133F48?
+  16,1: 
+  18,1: ??? Bitfield.
+    & 03 - 
+    & 30 - 
+    & 40 - Entity is horizontally flip
+    & 80 - Entity is vertically flip
+  1A,1: Bitfield.
+    & 0F - Palette index in the list of object palettes in VRAM.
+  1C,1: 
+  1E,1: Current frame index. Or 0xFF for no frame.
+  1F,1: Previous frame index.
+  20,4: 
+  24,2: ?
+    Y movement speed in 1/256ths of a pixel per frame??
+  27,1: Palette index in the list of object palettes in VRAM.
+  28,1: Index in list 020000C0
+  29,1: ??? Bitfield.
+    & 07 - Z-index. Lower values are on top. Default is 4.
+    & 38 - 
+  2C,4: X pos in subpixels.
+  2E,2: X pos in pixels.
+  30,4: Y pos in subpixels.
+  32,2: Y pos in pixels.
+  36,2: Visual Y offset 1?
+  38,1: Layer this entity is on.
+    1: BG2
+    2: BG1
+    index in list 08016A28? (entry length 2)
+    Affects BG priority OAM attribute
+  39,1: 
+  3A,1: Bitfield.
+    & 04 - ?
+  3B,1: 
+  3F,1: Maybe types of damage this entity takes...?
+  40,1: Maybe damage type this entity does...?
+  41,1: Bitfield.
+    & 80 - ?
+  42,1: 
+  43,1: 
+  44,1: 
+  45,1: Current HP.
+    For Link, this is in terms of 1/8s of hearts.
+  48,4: Pointer to hitbox data?
+    read from list 08114EE4 for type 6 and 7 entities, or an entity's sprite loading data for type 3 and 4
+    or list 0812A04C for spider webs
+    read at 03005B14
+      00,1: Left offset? (Signed.)
+      01,1: Top offset? (Signed.)
+      06,1: Right offset? (Signed.)
+      07,1: Bottom offset? (Signed.)
+  58,1: Current animation index. Or 0xFF for no animation.
+  59,1: Duration left for the current keyframe of the entity's animation.
+    Animation loops when this hits zero.
+  5A,1: ? (comes from keyframe+03,1)
+  5B,1: Bitfield of how the current keyframe is flipped.
+    & 40 - Horizontal flip
+    & 80 - Vertical flip
+  5C,4: Possibly a pointer to animation data? (e.g. 0811FF6F)
+  60,2: Tile index of the first GFX tile loaded in VRAM for this entity.
+  62,1: Visual X offset?
+  63,1: Visual Y offset 2?
+  68,1: 
+    For type 8 entities (player weapons) this is the item ID of the weapon.
+  6D,1: Bitfield.
+    & 20 - ? (set at 0804AF46 when an entity that has 01,1 & F0 == 1 is created)
+    & 40 - ? (set at 08058732 when a conditional enemy spawner creates this enemy)
+  70,2: 
+  72,2: (for doors?)
+  78,10: The entry for this entity in the entity list in ROM is copied here directly.

@@ -1,0 +1,1103 @@
+
+080FD590-080FD59F - List of rupee pouches.
+  Entry length 4.
+  00,2: Maximum number of rupees this pouch can hold.
+  02,2: ?
+080FD5A8 - List of rupee values.
+  Entry length 2.
+  0 - Green Rupee, worth 1.
+  1 - Blue Rupee, worth 5.
+  2 - Red Rupee, worth 20 (0x14).
+  3 - Big Green Rupee, worth 50 (0x32).
+  4 - Big Blue Rupee, worth 100 (0x64).
+  5 - Big Red Rupee, worth 200 (0xC8).
+  6 - ? rupee, worth 99 (0x63).
+080FD5B4-080FD963 - List of item data.
+  Entry length 8.
+  The item ID is the index in this list.
+  00,1: Index of where this item should go on the inventory screen.
+    0x63 means it doesn't go anywhere.
+  01,1: Affects code run when you get this item.
+    0805403C has a switch statement on this when you get the item.
+    00 Normal
+    01 Health refill
+    02 Rupee
+    03 Empty bottle
+    04 Bottle contents
+    05 Small key
+    06 Dungeon item
+    07 Bombs
+    08 Bomb bag upgrade
+    09 Bomb refills
+    0A Quiver upgrades
+    0B Bows
+    0C Arrow refills
+    0D Kinstone bag
+    0E Mysterious Shells
+    0F Kinstone Piece
+    10 Wallet upgrade
+    11 (Unused)
+    12 Boomerangs
+  02,1: Varies.
+    For rupees: index in list 080FD5A8
+    For consumable refills and upgrades: Number of the consumable to refill.
+  03,1: Bitfield.
+    & 0x01 - If clear, Link holds the item above his head with both hands. If set, he only uses one hand.
+    & 0x02 - If clear, Link only does the item get animation the first time he gets this item. If set, he does it every time he gets this item.
+  04,2: Message ID of the item get message for this item.
+    Read at 08083CE0.
+    Note that heart pieces (item ID 63) add the current number of pieces you own (from 02002AE9,1) to this message ID.
+  06,2: Another message ID? this is the same as the above ID for all items except shells and bomb bag upgrade
+080FD964-080FDD13 List of shop item data?
+  Entry length 8.
+  The item ID is the index in this list.
+  00,2: Number of rupees this item costs.
+  04,2: Message ID for the shopkeeper to say when you bring this item up to them.
+  06,2: Message ID shown when you actually buy the item.
+
+080FE1B4-080FE1C3 - List of possible item IDs that can drop from destroying grass.
+  Entry length 1. The entry is just the item ID of the item to drop.
+  00 means drop no item.
+  FC, FD, and FE mean drop a random kinstone piece (see 080FE1DD for which pieces).
+  FF means drop a Beetle enemy instead.
+080015BC-08001A7B - List of possible grass drop tables.
+  Entry length 0x20.
+  Entries in this list can be copied to 02034398.
+  Each entry is composed of 0x10 weights, each a halfword.
+  The index of the weight matches the index of the item ID in list 080FE1B4.
+
+080D2AB0-080D2AB7 - List of kinstone pieces that can drop from trees...?
+  These values are the unknown4 of a 6-96-07 entity.
+
+080C9CBC-080CA06B - List of kinstone pieces.
+  Entry length 8.
+  A kinstone ID (e.g. the kinstone piece item's unknown4) is an index in this list.
+  Kinstone ID 0 is invalid?
+  0x76 entries in total.
+  Valid IDs are 01-75.
+  00,1: Object palette ID.
+  01,1: Index in list 080CA06C?
+  02,1: Index in list 080CA06C?
+  03,1: 
+  04,1: Which reward to give when fused.
+    Index in list 080FE320.
+  05,1: 
+  06,1: Bitfield.
+    & 01 - Palette index in VRAM to use?
+  07,1: 
+
+080FE320 - List of kinstone fusion rewards.
+  Entry length 0x14.
+  00,1: Type of reward.
+    This is used in a switch statement at 0801877C
+    00 - 
+    01 - Spawns an enemy
+    02 - Spawns a small chest
+    03 - Makes a joy butterfly appear
+    04 - 
+    05 - Reveals a hidden passage under a puddle
+    06 - Lifts a fallen tree
+    07 - Reveals a hidden entrance in a tree
+    08 - Opens up a Minish-sized hole to fall in?
+    09 - Opens up an entrance in a waterfall?
+    0A - Grows a bean stalk
+    0B - Creates a lily pad
+    0C - ? Something in Hyrule Town
+    0D - ? Something with Mutoh
+    0E - Spookter leaves Hyrule Town
+    0F - Creates a grave? (entity at 080FEE58)
+    10 - ? Something in Hyrule Town
+    11 - 
+    12 - Goron digging?
+    13 - Biggoron wakes up
+    14 - Syrup makes red potions
+    15 - Borlov adds ??? to his game
+    16 - Marcy joins the post office
+    17 - Belari develops remote bomb
+    18 - 
+    19 - Opens up an entrance in a waterfall?
+  01,1: Depends on the type:
+    switch statement at 0801877E
+    01 - Index in list 080FEC28
+    0B - Index in list 080FED58
+    19 - Index in list 080FED18
+  02,1: Area index the reward should appear in.
+  03,1: Room index the reward should appear in.
+  08,2: X pos within the room.
+  0A,2: Y pos within the room.
+  0C,2: Global X pos.
+  0E,2: Global Y pos.
+  12,2: Depends on the type:
+    01 - Global flag index
+    03 - Item ID
+
+080FEC28 - List of enemy entities to spawn from kinstone fusion rewards.
+  Entry length 0x10.
+  Format is the same as the regular entity format. But you only load one, not the whole list.
+
+080FEAC8 - List of small chest tile entities to spawn from kinstone fusion rewards.
+  Entry length 8.
+  The index in this list is the same as the index in list 080FE320.
+  Format is the same as the regular tile entity format.
+  However, this list has 0 for the X and Y positions. Those are calculated based on the values in list 080FE320.
+
+080FED18 - List of waterfall opening entities to spawn from kinstone fusion rewards.
+  Entry length 0x10.
+  Format is the same as the regular entity format. But you only load one, not the whole list.
+
+080FED58 - List of lily pad entities to spawn from kinstone fusion rewards.
+  Entry length 0x10.
+  Format is the same as the regular entity format. But you only load one, not the whole list.
+
+080FE1DD,40 - List of possible kinstones to drop for random drop type FC.
+080FE21D,40 - List of possible kinstones to drop for random drop type FD.
+080FE25D,40 - List of possible kinstones to drop for random drop type FE.
+  Each entry is a byte, the kinstone ID.
+
+080CA06C - ??? GFX asset data
+  Entry length 4.
+  00,4: Bitfield.
+    & 7FFFFFFF - Asset offset relative to 085A2E80.
+    & 80000000 - If this bit is set, the data is 16-bit compressed. Otherwise it is uncompressed.
+
+080CA11C - List of ???2 flags for kinstones...?
+  A randomly generated number from 0-0x11 is the index in this list.
+  Each entry is a byte - a flag index in bitfield 02002C81.
+  The byte might be a kinstone ID?
+
+0811E7E8 - List of function pointers for items on the ground?
+  The index in this list is a 6-00 entity's unknown5.
+
+
+08016A28 - List of BG priorities for each layer?
+  Entry length 2.
+  00,1: 
+  01,1: 
+  Each index is for:
+  0 - ???
+  1 - BG2
+  2 - BG1
+  3 - ???
+
+0811F7D8 - list of ? function pointers.
+  08083B8C is the code that reads from here and then calls the func.
+
+
+081080A4 - List of Minish Village BG visual zone GFX data to load on the fly as the player walks around the room.
+  Entry length 0x40.
+  read at 08057DAA
+  the minish village entry is at 081081A4
+  Each entry is a list of 8 subentries. Each subentry is 8 bytes long. The subentry index is 0203329E,1 in RAM?
+  Note that subentry 0 behaves a bit differently. Branch at 08057DBA.
+  Format of each subentry:
+    00,4: Asset offset of the GFX data, relative to 085A2E80.
+      The GFX data is 0x1000 bytes long.
+    04,4: Pointer in VRAM for where to load it. e.g. 06001000.
+
+081081E4 - List of Minish Village visual zone BG palettes to load on the fly as the player walks around the room.
+  Entry length 1.
+  Each entry is just the palette group index to load.
+
+08108408 - List of Hyrule Town BG visual zone GFX data to load on the fly as the player walks around the room.
+08108468 - List of Hyrule Town (Prologue) BG visual zone GFX data to load on the fly as the player walks around the room.
+  Entry length 0x10.
+  00,4: Asset offset of the first GFX data, relative to 085A2E80.
+    The GFX data is 0x1000 bytes long.
+  04,4: Pointer in VRAM for where to load the first GFX data. e.g. 06002000.
+  08,4: Asset offset of the second GFX data, relative to 085A2E80.
+    The GFX data is 0x1000 bytes long.
+  0C,4: Pointer in VRAM for where to load the second GFX data. e.g. 06008000.
+
+08108050 - List of Minish Village visual zones.
+08108398 - List of Hyrule Town visual zones.
+081083AE - List of Hyrule Town visual zones 2.
+081083C4 - List of Hyrule Town visual zones 3.
+081083DA - List of Hyrule Town (Prologue) visual zones.
+081083F2 - List of Hyrule Town (Prologue) visual zones 2.
+  Entry length 0xA.
+  read by function 08056300, pointer 08108050 is argument r0
+    checks if the zone is on screen currently??
+  00,2: Which GFX data and palettes should be used in this zone.
+    This is an index in lists:
+      081080A4 (GFX) and 081081E4 (palettes) for Minish Village.
+      08108408 (GFX) for Hyrule Town.
+      08108468 (GFX) for Hyrule Town (Prologue).
+    0x00FF marks the end of this list.
+  02,2: X pos.
+  04,2: Y pos.
+  06,2: Width.
+  08,2: Height.
+
+
+08108764 - List of holes you can fall into.
+  Entry length 0x14.
+  08,1: Upper left X pos in 16x16 tiles.
+  09,1: Upper left Y pos in 16x16 tiles.
+  0A,1: Width in 16x16 tiles.
+    If width is 0, this region covers the entire room, instead of just a portion of it.
+  0B,1: Height in 16x16 tiles.
+  0C,4: pointer to ???
+    can be 0
+      Format of what it points to:
+        00,4: GFX asset offset.
+          The GFX gets loaded to 0600F000.
+          The data is 0x800 bytes long.
+        04,2: 
+        06,2: 
+        08,2: 
+        0A,2: 
+  10,4: Pointer to ?? some data for a type 6-28 entity?
+
+
+080B197C-080B2CD7 - Code and data that gets copied into on-chip RAM on boot.
+  Length: 0x135C bytes
+  Gets copied to 030056F0-03006A4B.
+
+080B2248-080B226F - List of update code pointers for each entity type.
+  The entity type is the index in this list.
+  There are 0xA entries in the list (for types 0-9).
+  (03005FBC-03005FE3 is where this list gets copied to into on-chip RAM on boot).
+
+080B2D4C-080B3053 - List of update code pointers for each type 6 entity subtype.
+  Each entry is a pointer to a function.
+  Entity subtype is the index in this list.
+  0xC2 entries in total.
+
+080B3054-080B313B - List of update code pointers for each type 9 entity subtype.
+  Each entry is a pointer to a function.
+  Entity subtype is the index in this list.
+  0x3A entries in total.
+  Subtype 7 checks room regions for something like loading GFX dynamically?
+
+080B313C-080B373B - List of update code pointers for each type 7 entity subtype.
+  Entry length 0xC.
+  Entity subtype is the index in this list.
+  0x80 entries in total.
+  00,4: Pointer to this NPC's main update function.
+  04,4: Pointer to this NPC's head's update function.
+    If the entity does not have a head separate from their body, this pointer is 0.
+  08,4: Pointer to this NPC's update function for their dummy sprite on the kinstone fusion screen.
+    if the entity does not fuse kinstones with Link, this pointer is 0.
+
+080D3BF8-080D3D93 - List of update code pointers for each type 3 entity subtype.
+  Each entry is a pointer to a function.
+  Entity subtype is the index in this list.
+  0x67 entries in total.
+
+08129320-081293B7 - List of update code pointers for each type 4 entity subtype.
+  Each entry is a pointer to a function.
+  Entity subtype is the index in this list.
+  0x26 entries in total.
+
+080B7B74 - List of ??? related to enemies taking damage
+  Entry length 0xC.
+  The index in this list is ([attacker+3F,1] * 0x22) + [defender+40,1].
+  00,1: If this is FF, use the below 00,2 value as the index in list 080B3744.
+    Otherwise, use 0 as the index in list 080B3744.
+  02,2: An index in list 080B3744.
+080B3744-080B379F - List of on-hit callback function pointers for enemies?
+  Index in this list comes from list 080B7B74.
+  0x17 entries in total.
+  All functions in this list take the following arguments:
+  r0 - Attacker entity
+  r1 - Defender entity
+  r2 - ??? e.g. 7
+
+
+080D3D94 - List of ? for each enemy subtype.
+  Entry length 2.
+  00,1: ? (gets stored to entity+6E,1)
+  01,1: ? (gets stored to entity+6F,1)
+
+
+0811BE48 - List of ?
+  Entry length 0xC.
+  The index in this list is the item ID.
+  00,1: 
+  01,1: 
+  02,1: Index in list 0811BFC8, list of func ptrs, maybe update code for each weapon
+  03,1: Subtype of the type 8 entity.
+  04,2: 
+  06,1: 
+  07,1: 
+
+080B77C0,2 - BG2 control? 0x1C42
+
+080FC9D8 - List of ? function pointers.
+  03001003,1 is the index in this list.
+080FC9E8 - List of ? function pointers.
+  This list is used when 03001003,1 is 2.
+  03001004,1 is the index in this list.
+
+0807C3C6 - this line of code sets the BG2 control bit to enable 256 colors
+0807C33A - switch statement on the current area index when entering a room.
+  the following areas have entries in the switch statement:
+  20, 2D: 0807C3BC
+    this enables 256 colors for BG2. it also does something else.
+  21, 22, 23, 24, 25, 27, 28, 30, 38: 0807C3E4
+
+
+080D4CFC - has a pointer to room 080F2E64 and other rooms. maybe this is the starter area.
+080D50FC - List of property list pointers for each area.
+  The area index (from 03000BF4,1) is the index in this list.
+  It leads to another list of pointers, the room index is the index in this list.
+0810309C - list of compressed room tile mapping pointers for each room.
+  The area index (from 03000BF4,1) is the index in this list.
+0811E214 - List of room GFX metadatas for each area.
+  The area index (from 03000BF4,1) is the index in this list.
+  each entry is a pointer like 0811CA26. which is itself a list of rooms, each 0xA bytes long.
+08107988 - List of rooms to layer list pointers for each area.
+  The area index (from 03000BF4,1) is the index in this list.
+  Then the pointer here points to a list of pointers, one for each room in the area.
+  Then the room pointer points to an asset list like 0810457C which contains layers (tile mappings).
+
+0810246C - List of pointers to lists of each area's available tilesets.
+  The area index (from 03000BF4,1) is the index in this list.
+Format of each list of available tilesets:
+  Simply a list of pointers, one for each available tileset.
+  The index in this list is the room's available tileset index.
+Format of each tileset:
+  Each tileset is a list. Each entry in the list is 0xC bytes long.
+  Each entry specifies either a palette to load, tile GFX data, or tile mappings.
+  Format of each entry: (e.g. 081018B4)
+    00,4: Varies depending on what type of entry this is:
+      If this is a palette, this is the index in the list of palette groups (080FF850).
+      Otherwise, you can calculate the pointer to the data like this:
+        gfx_pointer = (this_value & 0x7FFFFFFF) + 0x08324AE4
+      If bit 0x8000000 is not set, this is the last entry in this tileset list, so stop reading the list.
+    04,4: Tells you what type of entry this is.
+      If 0, this is a palette.
+      Otherwise, this is the address to store the data at.
+      If the data is compressed, and this address is in VRAM range (06000000-06FFFFFF), it will be decompressed using the 8-bit decompression function. If it's not in VRAM, the 16-bit decompression function will be used.
+    08,4: Varies depending on what type of entry this is:
+      If this is a palette, this value is just 0 and unused.
+      Otherwise, the highest bit (0x80000000) is set if the data is compressed, or clear if the data is uncompressed.
+    NOTE: The tile mapping type actually has more stuff in it besides just the tile mapping. e.g. It may get decompressed to 0202CEB4, but the actual BG2 tile mapping starts at 0202F9D4 (0x2B20 bytes after the beginning).
+
+0811BCB4 - List of ? function pointers
+  Entry length 4.
+  read at 080750F6 (e.g. when link wears elzo for the first time)
+
+08128A38 - List of something for different GUI screens
+  Entry length 8.
+  00,1: index in list 08128AD8
+
+08128AD8 - List of something for different GUI screens
+  Entry length 8.
+  00,1: Palette group index.
+  01,1: index in list 08100AA8
+  02,2: ?
+  04,2: 
+  06,2: 
+
+08100AA8 - List of ??? assets lists.
+  Each entry is a pointer to an ??? asset list.
+Format of each ??? asset list:
+  Entry length 0xC.
+  00,4: Bitfield.
+    & 0x00FFFFFF - Asset offset, relative to 085A2E80.
+    & 0x0F000000 - ?
+      7 goes to 0801D842
+      D goes to 0801D894 (return)
+      E goes to 0801D862
+      F goes to 0801D82E
+      other values go to 0801D836
+    & 0x80000000 - If this bit is set, continue loading the next asset entry. Otherwise this is the last one in this asset list.
+  04,4: RAM address to load the asset at.
+    If the asset data is compressed: If this address is 06000000 or greater, it means the data is 16-bit compressed. Otherwise it's 8-bit compressed.
+  08,4: Data length of the asset.
+    If this is negative, it means the data is compressed.
+
+
+081281A8 - List of figurine assets.
+  Entry length 0x10.
+  The figurine ID is the index in this list.
+  00,4: Pointer to the palette data.
+    There are always 9 palettes here, loaded starting at object palette 6.
+  04,4: Pointer to the GFX data.
+  08,4: Length in bytes of the GFX data.
+    If this is 0 or negative, the GFX data is 16-bit compressed.
+
+08107C0C-08107C0E - List of text speeds.
+  The text speed index (at 02000005,1 or 02000052,1) is the index in this list.
+  Each entry is a byte, which is the number of frames to wait between drawing each character.
+
+
+08127F94 - List of world map region positions.
+  Entry length 8.
+  00,1: Left X pos of the region (in pixels on the map/in 16x16 tiles in the room).
+    FF marks the end of the list.
+  01,1: Top Y pos of the region (in pixels on the map/in 16x16 tiles in the room).
+  02,1: Right X pos of the region (in pixels on the map/in 16x16 tiles in the room).
+  03,1: Bottom Y pos of the region (in pixels on the map/in 16x16 tiles in the room).
+  04,1: World map region index.
+    Index in list 08128DE8.
+    This also acts as the index of the bit in bitfield 02002A80,4 for the flag of this world map region being visited.
+  05,1: Padding...? always seems to be 00
+  06,2: Message ID of the region's name string.
+
+08128DE8 - List of world map regions.
+  Entry length 8.
+  02000083,1 is the index in this list, so is 04,1 in list 08127F94.
+  00,2: Bitfield.
+    & 0x001F - Region index above this one.
+    & 0x03E0 - Region index below this one.
+  02,2: Bitfield.
+    & 0x001F - Region index to the left of this one.
+    & 0x03E0 - Region index to the right of this one.
+  04 and 05 - ??? unused? always 00?
+  06,1: X pos for where to put the cursor when selecting this region.
+  07,1: Y pos for where to put the cursor when selecting this region.
+
+
+080C9C50 - List of dungeon map data.
+  Each dungeon entry is a pointer, which leads to a list of dungeon floor pointers, which each lead to a list of room map entries.
+  The dungeon index is the index in this list.
+  Format of each room's map data:
+    Entry length 8.
+    00,1: Area index.
+      If this is 0 it marks the end of the list.
+    01,1: Room index.
+    02,1: 
+    03,1: 
+    04,4: ?
+      offset past pointer 08324AE4 - might be gfx data? (length 0x400? so one whole row of tiles in VRAM)
+      actually does not seem to be GFX data, but a huge bitfield of data for what the map should look like?
+      each byte in the data is split into 4 different 2-bit numbers
+
+080C9C6C - List of floor metadata for each dungeon.
+  Entry length 4.
+  The dungeon index is the index in this list.
+  00,1: Number of floors this dungeon has.
+  01,1: What floor number the topmost floor of this dungeon is.
+    0 - B3
+    1 - B2
+    2 - B1
+    3 - 1F
+    4 - 2F
+    5 - 3F
+    6 - 4F
+    7 - 5F
+  02, ????
+
+08128D3C - List of pixel offsets from the top of the screen to draw the floor selection buttons on the dungeon map screen.
+  Each entry is a byte, which is the Y offset in pixels from the top of the screen to draw the topmost floor's button.
+  The number of floors the dungeon has is the index in this list. This is because dungeons with more floors need to have their top floor button higher up the screen so that everything looks centered.
+
+08127D30 - List of ??? data for each area. area metadata?
+  Entry length 4.
+  The area index is the index in this list.
+  00,1: Bitfield?
+    gets stored to 02033A90,1
+    & 0x02 - (checked at 08052728)
+    & 0x04 - (checked at 08052664)
+    & 0x08 - If this bit is set, this area is a dungeon and should use the dungeon map screen.
+    & 0x40 - (checked at 08052684)
+    If the whole bitfield is equal to 0x81, this area is part of the overworld.
+  01,1: ? Maybe some kind of area ID? different from area index
+    gets stored to 02033A91,1
+    Subtract 0x17 from this value to get the current dungeon index (02033A93)
+  02,1: ?
+    gets stored to 02033A92,1
+    index in list 0811E454
+  03,1: ?
+    gets stored to 020342F4,1
+
+0811E454 - List of local flag offsets.
+  Each entry is a halfword.
+  The halfword gets stored to 02033A94,2.
+  This is the offset in bytes into list 02002C9C.
+  Listed offsets:
+    0: 0000 Global
+    1: 0000 Global
+    2: 0100 Outdoors
+    3: 0200 Indoors
+    4: 0300 Caves & Passages
+    5: 0400 Caves
+    6: 0500 Deepwood Shrine
+    7: 05C0 Cave of Flames
+    8: 0680 Fortress of Winds
+    9: 0740 Temple of Droplets
+    A: 0800 Palace of Winds
+    B: 08C0 Dark Hyrule Castle
+    C: 09C0 (Unused 1)
+    D: 0A80 (Unused 2)
+
+
+081091E4 - List of ? for each entity type.
+  Each entry is a byte.
+
+
+0810942E - List of possible text color data?
+  Message command type 02's argument is an index in this list.
+  Entry length 0x20.
+  00,1: Background palette index this color is in.
+  
+
+
+080CC954 - List of Business Scrubs forms.
+  Entry length 0xC.
+  The Business Scrub's form is the index in this list.
+  00,1: Bitfield.
+    & FC - affects how it behaves maybe? like whether it checks a flag or not?
+  02,2: Price in rupees.
+    Some have FFFF here.
+  06,2: Message ID to say?
+  08,1: Item ID to give.
+  0A,2: Flag for having talked to the scrub. (Within the current area's flag list.)
+    Not all of them use this, some just have FFFF here.
+
+0811162B-08111635 - List of item IDs given when you complete each sword training.
+  Each entry is a byte.
+  00,1: Bitfield.
+    & 7F - The item ID.
+    & 80 - ??? Never seems to be read.
+
+08113A1C-008113A7B - List of extra sprite loading datas for Wind Tribespeople (7-49 entities).
+  Entry length 0x10.
+  The index in this list is the tribesperons's form.
+  Each entry is composed of up to 4 subentries.
+  When a subentry with sprite index 0 is reached, that's the end marker.
+  The subentry index matches the extra sprite index. So the 0th entry is for the head, 1st is for the body.
+  00,4: Bitfield.
+    & 000003FF - Object palette ID to load.
+    & 0000FC00 - 
+    & 03FF0000 - Sprite index.
+
+0810CB78 - List of extra sprite loading data for sitting people (7-13 entities).
+  Entry length 0xC.
+  The sitting person's form is the index in this list.
+  Each entry is a list of 3 subentries, each 4 bytes long.
+  Format of each subentry:
+  00,4: Bitfield.
+    & 000003FF: Object palette ID for this extra sprite.
+    & 0000FC00: ? (stored to extra sprite+08,1)
+    & 03FF0000: Sprite index for this extra sprite.
+      This being 0 marks the end of the list.
+    & 04000000: ?
+      If this is set, do something with the extra sprite's GFX tile index in VRAM
+0810CBC0 - List of ??? for sitting people (7-13 entities).
+  Entry length 4.
+  The sitting person's form is the index in this list.
+  00,1: Frame index offset for this form's head sprite.
+  01,1: Frame index offset for this form's body sprite.
+0810CD88 - List of ??? for sitting people (7-13 entities).
+  Entry length 4.
+  The sitting person's form is the index in this list.
+  Each entry is composed of 4 bytes. The index of which byte to use is the entity's animation's frame index & 0x03.
+  Each byte is the head frame index offset for that body frame?
+
+
+08000228 - List of layers in RAM?
+  Entry length 8.
+  00,4: Pointer to the layer's 16x16 tile mapping in RAM (e.g. 02025EB4).
+  04,4: Pointer to the layer's ??? in RAM (e.g. 0202AEB4). (MIGHT be collision?)
+
+080B37A0 (tile collision related?)
+  Entry length 1.
+080B7910 (tile collision related?)
+  Entry length 1.
+080B3E80 (tile collision related?)
+  Entry length 1.
+  Maybe list of all tile collision types?
+  00 Nothing
+  0F Solid
+  1D Bush
+  21 Pit
+  30 Water
+  43 Minish walkway left/right
+  47 Minish entrance facing down
+  5F Tall grass
+
+080047F6 - List of types of destructible tiles.
+  Entry length 8.
+  00,2: Bitfield of ?
+  02,1: Subtype of the type 6 entity to create when this tile is destroyed.
+    e.g. 0x0F here for a special effect.
+  03,1: Form of the type 6 entity to create when this tile is destroyed.
+  06,2: The tile type for this tile when it is destroyed.
+
+
+080B37A0 - List of ??? for each tile type.
+080B3910 - List of ??? for each tile type (when tile type is >= 0x4000).
+  Entry length 1.
+  The index in these lists are the tile type.
+
+
+08111F74 - List of messages for dogs to say depending on the state the game is in...?
+  Each entry is 0xA bytes long.
+  Seems to be a bunch of message IDs.
+  The state from 02002A48,1 is the index in this list.
+  Each entry is composed of 5 subentries, which are each a message ID.
+
+
+080B313C - List of function pointers for type 7 entities?
+  The subtype is the index in this list.
+
+08109D18 - List of pointers to Minish NPC AI scripts?
+  the Minish's unknown4 is the index in this list
+
+0811E524 - List of function pointers for each type of script command.
+  When running a command, its function is called with arguments:
+    r0 - RAM pointer to ? (e.g. 03001D98)
+    r1 - RAM pointer to cutscene entity (e.g. 02036570)
+Script command format:
+  00,2: Bitfield.
+    e.g. 0x0882
+    FFFF has a special meaning, maybe end the event
+    & 0x03FF: Which type of script command. Index in list 0811E524.
+    & 0xFC00: The length of this command in halfwords.
+  02+: Depends on the type of script command.
+    e.g. For type 82 (give an item), 02,2 is which item index to give.
+
+08009C2E - script command where the smith gives you in the intro (smith sword).
+  08009C30 - the item index to give (34)
+
+080B755C - List of pointers to ? for each area.
+  Each entry that is pointer to is a list of halfwords.
+  Each halfword is an index in list 080B7278.
+  A halfword being FFFF marks the end of the list.
+080B7278 - List of ? pointers.
+  Format of each entry that is pointed to:
+  00,4: This gets stored to 00,4 in list 02000CC0
+  04,2: This gets stored to 06,2 in list 02000CC0
+
+
+080B4468 - List of player facing directions offsets?
+  Entry length 4.
+  The player's facing direction divided by 2 is the index in this list.
+  This is used to determine what tile type is right in front of the player.
+  00,2: X offset.
+  02,2: Y offset.
+
+
+08109214 - List of pointers to strings?
+  02000007,1 has the index in this list. maybe language index?
+here's how to get a string pointer based on message ID:
+  the message ID is two indexes, one in the upper byte and one in the lower byte.
+  089B1D90 + upper_byte*4 - this has offset 1. (089B1DA8 = 7514)
+  089B1D90 + lower_byte*4 + offset_1 - this has offset 2. (089B92E0 = 3AD)
+  089B1D90 + offset_1 + offset_2 = string pointer. (089B9651)
+
+example message IDs:
+0851 - "Dark Nut" string
+
+08109C98 - List of forest minish directional sprites??
+  (read at 08060192)
+  Just a bunch of individual bytes without a clear pattern?
+
+08114F58 - List of NPC direction animation offsets
+  Each entry is a byte, the animation index offset to store to entity+14,1.
+  The index in this list is the return value from 080045C4
+
+
+
+
+08109DC8 - List of Forest Minish NPC dialogue.
+  Entry length 0x20.
+  The Minish's unknown4 is the index in this list.
+  Each entry is composed of 4 subentries, each 8 bytes long.
+  The index of the subentry seems hardcoded.
+  Each subentry is a NPC dialogue entry.
+0810AA30 - Postman dialogue.
+0810B7C0 - Townsperson dialogue.
+0810BE10 - Kid dialogue.
+0810C2E4 - Stamp dialogue.
+0810CAAC - Brocco dialogue.
+0810CC08 - Sitting person dialogue.
+0810CE04 - Pina dialogue.
+0810D0A4 - List of guard NPC dialogue.
+  Entry length 0x40.
+  The guard's unknown4 & 7F is the index in this list.
+  Each entry is composed of 8 subentries, each 8 bytes long.
+  The state from 02002A48,1 minus 2 (minimum 0) is the index of the subentry.
+  Each subentry is a NPC dialogue entry.
+0810F894
+08110080
+08110280
+08110390 - Smith dialogue.
+08110C10
+08110D00
+08110EF8
+08111938
+08111A94
+08111E34
+081126F0 - Town Minish dialogue.
+08112E2C
+08113158
+08113760
+08113930
+08113ABC - Wind Tribespeople ? dialogue.
+08113B28 - Wind Tribespeople ? dialogue.
+08113B30 - Wind Tribespeople ? dialogue.
+08113F48 - Mayor Hagen dialogue.
+08114308
+081144FC - Hurdy-Gurdy Man dialogue.
+
+NPC dialogue entry format:
+  An NPC dialogue entry can be passed as argument r1 to func 0806F1AC.
+  00,2: Bitfield affecting the flag to check.
+    & 0FFF: The flag index to check.
+    & F000: Affects the type of flag to check.
+  02,2: Bitfield.
+    & 000F: Affects code to run. Used in a switch statement.
+      0 0806F332 Show message ID 0000 (blank).
+      1 0806F342 Show possible message 2.
+      2 0806F1F4 Checks and sets a certain flag specified above.
+        If it's set, show possible message 1. Otherwise show possible message 2.
+        It determines how to check the flag by using the "type of flag" field above in a switch statement.
+          0 0806F21A Room flag.
+          1 0806F22A Local flag.
+          2 0806F23A Global flag.
+          3+ Invalid, just always show possible message 2.
+      3 0806F24E Checks and toggles a certain flag specified above.
+        If it's set, show possible message 1. Otherwise show possible message 2.
+        It determines how to check the flag by using the "type of flag" field above in a switch statement.
+          0 0806F276 Room flag.
+          1 0806F28A Local flag.
+          2 0806F29E Global flag.
+          3+ Invalid, just always show possible message 2.
+      4 0806F2BA Checks a certain flag specified above.
+        If it's set, show possible message 1. Otherwise show possible message 2.
+        It determines how to check the flag by using the "type of flag" field above in a switch statement.
+          0 0806F2F4 Check a room flag.
+          1 0806F2FC Check a local flag.
+          2 0806F304 Check a global flag.
+          3 0806F30C Check if a kinstone is fused.
+          4 0806F314 Check if an item is owned or formerly owned.
+          5+ Invalid, just always show possible message 2.
+      5 0806F324 Calls a function.
+        Read a function pointer from 04,4. Call that function with this NPC entity as arg r0.
+      6 0806F336 Checks if Link is Minish-sized.
+        Show possible message 2 if he is. Otherwise show possible message 1.
+    & 0010: If set, avoid having the text box overlap this NPC. Otherwise, avoid having the entity the camera is following (e.g. Link).
+  04,2: Possible message 1.
+  06,2: Possible message 2.
+
+
+0813A7F0 - List of exits for each area.
+  The area index is the index in this list.
+  Each entry is a pointer to a list of exit pointers.
+
+0811E7AC-0811E7BB - List of exit transition functions.
+  The exit's transition type is the index in this list.
+
+
+081267F0 - ???
+  04,4: - pointer to ??? (e.g. 081263E8)
+081263E8 - ???
+  Entry length 8.
+  The item ID is the index in this list.
+  02,2: Bitfield.
+    & 0x03FF - 
+  03,1: Bitfield.
+    & 0x0C - 
+
+080029B4-8003E43 - List of sprites.
+  Entry length 0x10.
+  00,4: Pointer to a list of animation pointers.
+  04,4: Pointer to a list of frame GFX data.
+  08,4: Pointer to GFX data for this sprite.
+  0C,
+080FDFD8 - List of ? for items. Animations?
+  Each entry is a pointer to an animation. (e.g. 080FDF86 for jabber nut)
+  The item ID is the index in this list.
+Format of each animation:
+  There is one or more keyframe. Each keyframe is 4 bytes long:
+  00,1: Frame index.
+  01,1: Duration of this keyframe.
+  02,1: Bitfield of how the keyframe is flipped.
+    & 40 - Horizontal flip
+    & 80 - Vertical flip
+  03,1: ?
+    (gets stored to entity+5A,1)
+    & 80 - If this bit is set, it marks the end of the animation.
+    & 3F - Frame index for this NPC's head?
+      It's not so simple though - guards use this value + 0x19 for their head sprite frame. Other entities don't seem to do that.
+      the exact bitmask may depend on the entity. I've seen &7F and &0F too.
+  Once the end of the animation is marked, there is one final byte:
+  00,1: Total number of keyframes in this animation. (This times 4 is how many bytes backwards the game jumps.)
+Sprite frame GFX data format:
+  (Example list: 08114F98 for sprite 01, Link.)
+  Entry length 4.
+  00,1: Number of GFX tiles this frame uses. (Multiple this by 0x20 to get the number of bytes.)
+  01,1: (seems to be 00 or 01?)
+  02,2: an index in list 081C8C74 or similar
+081C8C74 - List of ?
+  Entry length 0x20.
+  GFX data?
+  so the index is an index of which tile to start on
+  it might actually copy 0x100 bytes, or 8 tiles though
+
+
+085A2E80 - List of all assets in ROM.
+  GFX, tile mappings, and palettes all seem to be referenced relative to this pointer.
+
+080FF850 - List of pointers to palette groups.
+  A palette group is a list of palette sets.
+  Format of each palette set:
+  00,2: Index of the first palette in the list of all palettes (085A2E80).
+  02,1: What slot to load the first palette into palette VRAM.
+  03,1: Bitfield.
+    & 0x0F - Number of palettes. (0 here is interpreted to mean 0x10 palettes.)
+    & 0x80 - If this bit is set, it means to continue on and load the next palette set in this palette group. If not set, this is the last palette set in this palette group.
+
+08133368 - List of object palettes.
+  Entry length 4.
+  00,4: Bitfield.
+    & 00FFFFFF - Offset of the first palette relative to 085A2E80.
+    & 0F000000 - Number of palettes to load.
+
+080D2C58 - List of sprite loading data for each enemy (type 3 entities).
+0813210C - List of sprite loading data for type 4 entities.
+Sprite loading data format for type 3 and 4 entities:
+  Each sprite loading data is 0x10 bytes long.
+  The entity subtype is the index in these lists.
+  00,2: Bitfield.
+    If this is FFFF, this entity has multiple forms. Otherwise it has only a single form.
+    0 for this whole bitfield means no sprite.
+    & C000 - Affects how to load the GFX.
+      0 - Load fixed GFX.
+        This bitfield & 03FF is the fixed GFX index in list 08132B30.
+      1 - Swap type GFX.
+        This bitfield & 0FF0 - might be number of consecutive slots it needs? (in list 02024490) (arg r1 to func 080AE008)
+      2 - Use common GFX that doesn't need to be loaded in.
+        This bitfield & 03FF is the index of the first tile in VRAM to use for this entity.
+  If this entity has only a single form:
+    02,2: Object palette ID. (See function documentation on LoadObjectPalettes for details.)
+    04,4: hitbox data? pointer (stored to entity+48,4)
+    08,2: Sprite index.
+    0A,1: Bitfield.
+      & 07 - These bits are copied to bits 38 in the entity's bitfield 29,1
+      & 08 - 
+      & 30 - These bits are copied to bits 03 as well as 30 in the entity's bitfield 18,1
+    0B,1: Max HP of this entity.
+    0C,2: (stored to entity+24,2)
+      Y movement speed in 1/256ths of a pixel per frame??
+    0E,1: (stored to entity+3F,1)
+    0F,1: (stored to entity+3B,1)
+  If this entity has multiple forms:
+    04,4: Pointer to a list of multiple sprite loading datas, each a different form of this entity.
+      The entity's form is the index in this list.
+
+08126798 - List of sprite loading data for type 6 entities.
+08114AE4 - List of sprite loading data for NPCs (type 7 entities).
+Sprite loading data format for type 6 and 7 entities:
+Each sprite loading data is 8 bytes long.
+The entity subtype is the index in these lists.
+  00,1: Bitfield.
+    & 03 - Affects the type of data here.
+      0 is no sprite, 1 means the entity has only a single form, 2 means it has multiple forms each with a different sprite.
+  If this entity has only a single form:
+    01,1: 
+      index in list 08114EE4
+    02,2: Bitfield.
+      & 0C00 - Affects how to load the GFX.
+        0 - Load fixed GFX.
+          This bitfield & 03FF is the fixed GFX index in list 08132B30.
+        1 - Swap type GFX.
+          This bitfield & 0FF0 - might be number of consecutive slots it needs? (in list 02024490) (arg r1 to func 080AE008)
+        2 - Use common GFX that doesn't need to be loaded in.
+          This bitfield & 03FF is the index of the first tile in VRAM to use for this entity.
+    04,2: Bitfield.
+      & 03FF - Object palette ID. (See function documentation on LoadObjectPalettes for details.)
+      & 3000 - These bits are copied to bits 30 in the entity's bitfield 18,1
+    06,2: Bitfield.
+      & 03FF - Sprite index.
+      & 1C00 - These bits are copied to bits 38 in the entity's bitfield 29,1
+      & 6000 - These bits are copied to bits 03 in the entity's bitfield 18,1
+  For type 2:
+    04,4: Pointer to a list of multiple sprite loading datas, each a different form of this entity.
+      The entity's form is the index in this list.
+      The format of the sprite loading datas in this list is the same as documented above.
+
+08126DA8 - List of sprite loading data for player items in use (type 8 entities).
+Sprite loading data format for type 8 entities:
+  Entry length 8.
+  The entity subtype is the index in this list.
+  00,1: Bitfield.
+    & 0F - Palette index in object palette VRAM.
+    If this bitfield is FF, it means the entity has multiple forms, so use a form subentry from list 08126ED8.
+  01,1: (stored to [weapon entity+44,1])
+    If this entity has multiple forms, this value is used as the index in list 08126ED8.
+  02,1: ?
+    If this entity has multiple forms: This is the item ID for the first form of this subtype.
+    For items that have multiple forms in a single subtype, the item IDs need to be consecutive.
+    For example, the sword subtype has 01 here, because the first sword has item ID 01.
+  03,1: (stored to [weapon entity+40,1])
+  04,1: (stored to [weapon entity+3F,1])
+  05,1: Sprite index for this weapon.
+  06,2: Bitfield.
+    & 03FF - Tile index of the first GFX tile loaded in VRAM for this entity.
+    If this whole bitfield is 0, just copy the player's first VRAM tile index.
+08126ED8 - List of pointers to ??? lists
+  0 08126E68
+  1 08126E98
+  2 08126EC8
+08126E68, 08126E98, 08126EC8 - List of ??? form subentries for type 8 entities.
+  Entry length 8.
+  The index in this list is the [weapon entity+68,1], minus 02,1 from list 08126DA8.
+  The format of entries in these lists is the same as the format of entries in list 08126DA8 (just without the possibility of multiple forms)
+
+
+
+080FCAF8-080FCB17 - List of minecarts.
+  Entry length 8.
+  The index in this list is the minecart's unknown5.
+  00,2: Position bitfield.
+    & 003F - X pos in 16x16 tiles.
+    & 0FC0 - Y pos in 16x16 tiles.
+    Note that the minecart is actually placed at the center of the specified tile, so add +8 pixels to both X and Y.
+  04,1: Room index.
+  05,1: Animation index offset?
+  06,1: unknown4 for the minecart?
+
+
+081227B4 - List of house doors (type 6-5D entity).
+  Entry length 2.
+  The house door's form is the index in this list.
+  00,1: Frame index to use for this door.
+    If this is FF, use the door's unknown4 instead.
+  01,1: Direction.
+    If the above frame index is FF, use the door's unknown4 instead.
+    0 - Down-facing
+    1 - Left-facing
+    2 - Up-facing
+    3 - Right-facing
+
+
+081084C8 - List of ??? (shop signs?) in Hyrule Town.
+08108530 - List of ??? (shop signs?) in Hyrule Town (Prologue).
+  Entry length 8.
+  00,2: Rect left X pos.
+    0 here marks the end of the list.
+  02,2: Rect top Y pos.
+  04,1: Form of the 6-1C entity to create.
+  05,1: Frame index to set for the entity.
+  06,1: Layer to put the entity on.
+  07,1: (Probably padding.)
+
+
+08108CA8-08108CCB - List of alpha blending coefficients.
+  Entry length 2.
+
+
+08121380 - List of which palette to use for each form of warp point.
+  Each entry is a byte.
+  The warp point's form is the index in this list.
+  00,1: Bitfield.
+    & 0F - Object palette index for this warp point.
+
+
+08114EE4 - List of hitbox data? pointers for type 6 and 7 entities.
+
+08132B30 - List of GFX data for entities that preload all their GFX into RAM (fixed GFX), instead of swapping it out on the fly like Link does.
+  Entry length 4.
+  A fixed GFX index is an index in this list.
+  Index 0 is invalid in this list.
+  00,4: Bitfield.
+    & 00000001 - Data is compressed.
+    & 00FFFFFC - Asset offset relative to 085A2E80 of the GFX data.
+    & 7F000000 - Length of the GFX data if it's uncompressed, in terms of 16 8x8 tiles (so multiply this number by 0x200 to get the length in bytes).
+
+0811F690 - List of door GFX for each area?
+  Index in this list is the current area index-0x40.
+  Each entry is a halfword, which is an index in list 08132B30.
+  (Code at 080837DC is responsible for reading this. Note that area indexes 68 and 88 have special code to load certain object palettes.)
+
+
+089FB780 - Sprite subentry offset data???
+  Entry length 2.
+  The index in this list is the sprite index.
+How to get the ??? data pointer:
+  offset_1 = read halfword from: 089FB780 + sprite_index*2
+  unk_index = read byte from: 089FB770 + offset_1 + frame_index
+  offset_2 = read word from: 089FB770 (0xD00)
+  offset data pointer = 089FB770 + unk_index*4 + offset_2
+  Format of each entry:
+    00,1: X offset 1.
+    01,1: Y offset 1.
+    02,1: X offset 2.
+    03,1: Y offset 2.
+
+
+comes from 080F2FA0
+which is index 3 in list starting at 080F2F94
+which is given as the argument to ChangeRoom
+which is from the room in ram format, at 1C,4. (specifically 02033D08)
+which is copied by 08052E6E, from list 080D4CBC, index 0x11.
+  the index 0x11 is the room index.
+  the list 080D4CBC is from 080D50FC, for area 0x22.
+hmm, but that 080F2F94 list, which i'm calling the room properties list...
+  what else does it have?
+  at index 0 is 080F2E84. this gets stored to 020343BC.
+  at index 1 is 080F2EE4. this gets stored to 020343C0.
+  at index 2 is 080F2F74. this gets stored to 020343C4.
+  at index 3 is 080F2F84. this gets stored to 020343C8.
+  so they're all room properties after all...
+
+
+0841C5BC - some compressed data
+08428838 - some compressed data
+0841D540 - some compressed data
+08455E70 - some compressed data
+0842B254 - compressed BG2 tile mapping for one of the first rooms
+0842759C - compressed BG2 tile mapping for one of the first rooms?
+  081029C4 is the metadata for the compressed data:
+    00,4: to get the pointer to the compressed data in ROM, take this value, & 0x7FFFFFFF, + 08324AE4.
+    04,4: if the highest byte is 06, it's 16bit compressed. otherwise it's 8bit compressed.
+    0807C01C is where it reads the metadata pointer for the tile mapping.
+08422E70 - compressed GFX data, for tilesets.
+  081018B4 - metadata for it
+  0807C010 is the code where it reads the metadata pointer for the tile GFX.
+  08101944 - where the metadata point is originally read from rom
+
+08909F60,2640: GFX data for the inventory screen.
+0890FCA0,3300: GFX data for the quest screen.
+08934FE0,4000: GFX data for the world map screen.
+
+08938FE0,500: GFX 8x8 tile mapping for the world map screen.
+
+085B4360,40: Inventory and quest screen palettes? (BG palettes D and E?)
+085B44C0,E0: World map screen palettes? (BG palettes 6 through C)
+
+085A62E0,1A0: Some palettes, not sure which
+085B4DC0,120: Some palettes, not sure which
+
+0892EAE0,500: Temple of Droplets map BG1 8x8 tile mapping?
+
+082F3D74 - List of OAM sprite data?
+Here's how to find the pointer based on arguments r1 and r2 to function 03006588:
+  read from 082F3D74 + r1*4 - you get offset_1
+  read from 082F3D74 + offset_1 + r2*4 - you get offset_2
+  read from 082F3D74 + offset_2 - you get the OAM sprite data entry
+  r1=1FB r2=5A for hatless link?
+  also this same calculation is done at 03006568. r1 is still the first index, although the second index is now in r0.
+  082FFA29 - the entry for one frame of link walking downwards
+  r1=1 r2=7 - the indexes for link walking downwards
+  ooh... the indexes are the same as the ones for list 080029B4!
+    the first index is the index in list 080029B4.
+    the second index is the index of the list pointed to at 04,4 in that entry read from list 080029B4.
+08324729,2 - OAM tile index for link with hat on the map screen
+0832472F,2 - OAM tile index for hatless link on the map screen
+Format of each frame:
+  The first byte is the number of OBJs this frame needs.
+  Then a list of data for each OBJ:
+  Each OBJ is 5 bytes long.
+  00,1: X offset. Signed.
+  01,1: Y offset. Signed.
+  02,1: Bitfield.
+    & 01 - Override entity palette.
+      If set, ignore this entity's object palette index, and only use the palette index specified in 03,2 of this OBJ data.
+      If clear, add this entity's object palette index to the palette index specified in 03,2 of this OBJ data.
+    & 02 - Seems unused.
+    & 04 - Horizontal flip.
+    & 08 - Vertical flip.
+    & 30 - OBJ size.
+    & C0 - OBJ shape.
+  03,2: Bitfield.
+    & 03FF - Offset in terms of GFX tiles to the first tile for this OBJ, from the start of this entity's GFX data loaded in VRAM.
+    & 0C00 - "Priority relative to BG"
+    & F000 - Palette index 
+080A63E4 - where the indexes for link on the map screen are hardcoded
+  first index is always 1FB, second is either 59 or 5A depending on with hat or no hat

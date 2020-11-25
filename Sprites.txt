@@ -1,0 +1,45 @@
+000 - 
+001 - Link standing/walking
+002 - Link shooting bow
+003 - Link pulling/pushing
+004 - Hatless Link standing/walking
+005 - Link lifting?
+006 - Link attacking
+007 - Link in air? both with and without hat?
+008 - Link jumping?
+009 - Hatless Link lifting?
+00A - Speech balloons to show what's happening with Link/Ezlo when they're tiny
+00B - Ezlo
+00C - Minish-sized Link
+00D - 
+00E - Swinging sword 1
+00F - Swinging sword 2
+010 - Swinging sword 3
+011 - 
+012 - 
+013 - 
+014 - 
+015 - Bow
+018 - Gentari
+019 - Festari
+01D - Town Minish
+01F - Minish
+020 - Vaati
+027 - Din
+028 - Nayru
+029 - Farore
+02A - Zelda
+02B - Guard
+02C - King Daltus
+02D - Minister Potho
+02F - Maid
+030 - Tingle
+031 - Beedle
+032 - Brocco
+041 - Purry
+04F - Dina
+061 - Digits 0-9
+087 - Spider web
+142 - Item icons
+148 - some kind of test sprite? programmer art of a person
+1F8 - Figurines

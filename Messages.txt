@@ -1,0 +1,225 @@
+
+A message ID is composed of two indexes, the upper and lower byte.
+The upper byte is sort of the category:
+  00 System messages
+  01
+  02 NPC Names
+  03 Swordsman Newsletters
+  04 Item names (note: this has some interesting debug item names!)
+  05 Item get messages
+  06 
+  07 
+  08 Figurine names
+  09 Figurine descriptions
+  0A 
+  0B 
+  0C 
+  0D Some NPC dialogue
+  0E 
+  0F Intro
+  10 Prologue dialogue
+  11 Minish Woods & Minish Village dialogue
+  12 Melari's Mine dialogue
+  13 
+  14 
+  15 
+  16 
+  17 
+  18 
+  19 
+  1A 
+  1B 
+  1C 
+  1D 
+  1E 
+  1F 
+  20 
+  21 
+  22 
+  23 
+  24 
+  25 
+  26 
+  27 
+  28 
+  29 
+  2A 
+  2B 
+  2C 
+  2D 
+  2E Names & prices of items for sale
+  2F 
+  30 Anju's dialogue
+  31 
+  32 
+  33 
+  34 Hyrule Town misc dialogue
+  35 
+  36 
+  37 
+  38 
+  39 
+  3A 
+  3B 
+  3C 
+  3D 
+  3E 
+  3F 
+  40 
+  41 
+  42 
+  43 Carlov's dialogue
+  44 
+  45 
+  46 
+  47 
+  48 
+  49 Maggie
+  4A 
+  4B 
+  4C 
+  4D 
+  4E 
+  4F 
+
+In encoded message strings:
+Bytes <= 0x0F indicate the start of a text command
+switch at 0805EFF8 is on that byte
+  00 0805F04C
+  01 0805F058
+    next byte is ?
+    this could be ezlo related?
+  02 0805F06E Changes current text color.
+    Next byte is the color index.
+    00 White
+    01 Red
+    02 Green
+    03 Blue
+  03 0805F07A Plays a sound effect.
+    Next two bytes are a big endian halfword, the sound effect ID.
+  04 0805F090 ???
+    next byte is ?? (00-15), used in switch statement at 0805F098
+      00-0F 0805F104
+      10 0805F108
+        next byte is ?
+      11 0805F114
+      12 0805F118
+      13 0805F11C
+      14-15 0805F120 (used for shell number selection & probability??)
+        15 seems to toggle something on and 14 toggles it off
+  05 0805F130 one option in a choice?
+    if next byte is 0xFF, ???
+    otherwise, read another byte as the upper byte of the halfword. that halfword is a message ID, where to go to when the player selects this choice.
+  06 0805F150 Shows a variable as a string.
+    next byte is the type of variable?
+      00 Player's name
+      01 number?
+      02 number?
+      03 number?
+      04 Unused?
+      05 read another halfword after this byte. that halfword is a message ID. unused?
+  07 0805F196 inserts another message?
+    next halfword is a message ID.
+  08 0805F1C0
+    next byte is ?
+    related to wind crest usage
+  09 0805F1CC
+    next byte is ?
+    0978 might auto-advance text?
+    0900 is also used by message 1048, not sure when that message is used though
+  0A 0805F1D8 Linebreak.
+  0B 0805F1DC
+    next byte is ?
+  0C 0805F1EC Button icon.
+    Next byte is the index of the button icon.
+      00 A button
+      01 B button
+      02 L button
+      03 R button
+      04 D-pad up
+      05 D-pad down
+      06 D-pad left
+      07 D-pad right
+      08 D-pad neutral
+  0D 0805F1FC
+    next byte is ?
+  0E 0805F20C
+    next byte is ?
+  0F 0805F21C special symbol line an arrow
+    next byte is which symbol index
+    00 Nothing?
+    01 Right-pointing triangle
+    02 Opening hook bracket
+    03 Closing hook bracket
+    04 X mark
+    05 Opening curly quotation mark
+    06 Interpunct
+    07 Up arrow
+    08 Down arrow
+    09 Left arrow
+    0A Right arrow
+    0B Music note
+    0C Heart
+    0D Ampersand
+    0E Quotation mark
+    0F Handakuten
+    10 Number sign
+    11 Dollar sign
+    12 Percent sign
+    13 Asterisk
+    14 Plus sign
+    15 Forward slash
+    16 Semicolon
+    17 Less than sign
+    18 Equals sign
+    19 Greater than sign
+    1A At sign
+    1B Opening square bracket
+    1C Yen sign
+    1D Closing square bracket
+    1E Caret
+    1F Underscore
+    20 Opening curly bracket
+    21 Pipe sign
+    3F Trademark symbol
+  10+ 0805F22C (regular ascii characters)
+
+each of the command entries in the switch statement puts an index into the upper byte of r5. (specifically, r5 & 0F00)
+later on, that index is used in another switch statement at 0805F26A:
+  00 0805F2A0 (not used I believe, 0 for the upper byte may indicate a non-printable character)
+  01 0805F2A0
+  02 0805F2B6
+  03 0805F2B6
+  04 0805F2B6
+  05 0805F2B4
+  06 0805F2B4
+  07 0805F2B4
+  08 0805F2B4
+then that index is also used in list 08109248, which is a list of pointers.
+  00 08692F60
+  01 08692F60
+  02 086978E0
+  03 08696F60
+  04 086AAEE0
+  05 086998E0
+  06 086A18E0
+  07 086A2A60
+  08 086A2EE0
+each of those pointers is a list of symbol GFX data which has entry length 0x40. the index in this list is the lower byte of r5 set by the first switch statement.
+
+if that r5 value is <= 0xE, it's used in a switch statement at 0805F35A:
+  00 0805F402
+  01 0805F402
+  02 0805F3FC
+  03 0805F3FC
+  04 0805F3FC
+  05 0805F3FC
+  06 0805F3FC
+  07 0805F3FC
+  08 0805F3FC
+  09 0805F3FC
+  0A 0805F3FC
+  0B 0805F3AC
+  0C 0805F3A8
+  0D 0805F3FC
+  0E 0805F3FC

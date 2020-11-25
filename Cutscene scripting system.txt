@@ -1,0 +1,66 @@
+
+080A7C5C is where it stores the item ID of the smith's blade key item to entity+A
+080A7C38 - function that gives a cutscene item?
+08009C30,2 - has the item ID of the smith's blade
+08009C2E appears to be a script command.
+
+(List of script command functions at: 0811E524)
+Script command types:
+  01 - Marks the start of initialization - the part of the script that should be run while the room is being loaded in.
+    Set bit &02 of bitfield 02033287,1.
+  02 - Marks the end of initialization.
+    Clear bit &02 of bitfield 02033287,1. (Might mark the end of initialization commands?)
+  03 - Unconditional jump. Takes a single argument which is the offset to jump, relative to the argument (not the start of the command).
+    Can be a negative offset to loop.
+    Note that this offset is rounded to a halfword in case it's odd for some reason. (Rounded towards zero.)
+  04 - Affirmative conditional jump.
+    If cutscene entity+14,4 is nonzero it jumps, otherwise it does not.
+  05 - Negative conditional jump.
+    If cutscene entity+14,4 is zero it jumps, otherwise it does not.
+    It seems like NPCs use this to loop when idle, and stop the loop when you talk to them in order to put a message onscreen...?
+  06 - ??? conditional jump.
+    If cutscene entity+4,4 is less than the length of the current script command in halfwords (from 02033286,1) it jumps, otherwise it does not?
+  0B - Executes a function.
+    Takes a single word argument, which is a pointer to the function to run.
+    The func it calls gets passed the following arguments:
+      r0 - The entity that started this cutscene (e.g. the NPC)
+      r1 - The cutscene entity (e.g. 02036594)
+  1A - Checks if the player owns at least a certain number of rupees.
+    Takes a single halfword argument, the minimum number of rupees.
+  1B - Checks if the player owns at least a certain number of mysterious shells.
+    Takes a single halfword argument, the minimum number of shells.
+  16 - Checks if the player is within a certain region.
+    Takes three halfword arguments.
+      arg0 - Center X pos
+      arg1 - Center Y pos
+      arg2 - Bitfield.
+        & 00FF - Half width (on either side of the center)
+        & FF00 - Half height (above or below the center)
+  2D - Sets a global flag.
+    Takes a halfword argument which is the index of the bit.
+  4E - Sets an extra argument for the next command to use.
+    Takes a single word argument, the extra argument to set.
+  5C - Shows dialogue message?
+    Takes two halfword arguments.
+    The first is the message ID.
+    The second is ???.
+  61 - Sets the direction this entity is facing.
+    Sets entity+14,1 to the command argument.
+  63 - ? Animation related?
+    Sets entity+14,1 to something calculated by some function
+    Sets animation index offset?
+    This might calculate what the correct anim index should be for the current direction the NPC is facing
+  79 - Sets a bit in the cutscene entity?
+    the bitfield is located at r1+8,4
+    The command argment is the index of the bit.
+  7A - duplicate of 79?
+  82 - Give an item.
+    Takes a single argument which is the item ID.
+    If the item ID is 3F (mysterious shells) the number of shells to give needs to be set as an extra argument.
+    To do that call script command 4E before calling this command.
+  83 - Give a kinstone piece.
+    Takes a single argument which is the kinstone piece ID to give.
+  84 - Checks if an item is owned.
+    Takes one argument, the item ID.
+  85 - Sets an item as owned, without an item get cutscene.
+    Takes two arguments, the item ID and the bits to set for it in the owned item bitfield.
